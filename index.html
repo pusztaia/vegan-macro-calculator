@@ -99,6 +99,10 @@
             </div>
 
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <button id="pwaInstallBtn" title="Alkalmazás Telepítése a Kezdőképernyőre" class="hidden p-2 sm:p-2.5 rounded-xl border border-brand-500 bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 hover:bg-brand-100 dark:hover:bg-brand-900/60 transition-colors flex items-center gap-1.5 text-xs font-bold shadow-sm">
+                    <i data-lucide="download" class="w-4 h-4 text-brand-600 dark:text-brand-400"></i>
+                    <span class="hidden sm:inline">Telepítés</span>
+                </button>
                 <button onclick="window.print()" title="Összegzés Nyomtatása / PDF" class="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center gap-1.5 text-xs font-semibold">
                     <i data-lucide="printer" class="w-4 h-4"></i>
                     <span class="hidden md:inline">Nyomtatás</span>
@@ -113,6 +117,17 @@
             </div>
         </div>
     </header>
+
+    <!-- iOS PWA Install Banner -->
+    <div id="iosInstallBanner" class="hidden bg-brand-600 text-white px-4 py-2 text-xs flex items-center justify-between shadow-md">
+        <div class="flex items-center gap-2">
+            <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
+            <span>Tipp: Érintsd meg a <strong>Megosztás</strong> <i data-lucide="share" class="w-3.5 h-3.5 inline"></i> gombot, majd a <strong>"Főképernyőhöz adás"</strong> opciót az app mentéséhez!</span>
+        </div>
+        <button onclick="dismissIosBanner()" class="p-1 hover:bg-brand-700 rounded transition" title="Bezárás">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -1686,12 +1701,69 @@
             lucide.createIcons();
         }, { passive: true });
 
+        // PWA Service Worker & Install Prompt Logic
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW regisztrálva:', reg.scope))
+                    .catch(err => console.error('SW regisztrációs hiba:', err));
+            });
+        }
+
+        let deferredInstallPrompt = null;
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            if (pwaInstallBtn) {
+                pwaInstallBtn.classList.remove('hidden');
+                lucide.createIcons();
+            }
+        });
+
+        if (pwaInstallBtn) {
+            pwaInstallBtn.addEventListener('click', async () => {
+                if (!deferredInstallPrompt) return;
+                deferredInstallPrompt.prompt();
+                const choice = await deferredInstallPrompt.userChoice;
+                if (choice.outcome === 'accepted') {
+                    pwaInstallBtn.classList.add('hidden');
+                }
+                deferredInstallPrompt = null;
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (pwaInstallBtn) pwaInstallBtn.classList.add('hidden');
+            deferredInstallPrompt = null;
+        });
+
+        // iOS Safari Add to Home Screen Banner detection
+        function checkIosInstallBanner() {
+            const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+            const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+            const dismissed = localStorage.getItem('ios_pwa_banner_dismissed');
+            const banner = document.getElementById('iosInstallBanner');
+            if (isIos && !isStandalone && !dismissed && banner) {
+                banner.classList.remove('hidden');
+                lucide.createIcons();
+            }
+        }
+
+        function dismissIosBanner() {
+            const banner = document.getElementById('iosInstallBanner');
+            if (banner) banner.classList.add('hidden');
+            localStorage.setItem('ios_pwa_banner_dismissed', 'true');
+        }
+
         // Initialize on load
         window.onload = function() {
             loadFromStorage();
             lucide.createIcons();
             calculate();
             initProteinSwapper();
+            checkIosInstallBanner();
         };
     </script>
 </body>
