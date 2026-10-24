@@ -40,7 +40,9 @@ Növényi étrendre optimalizált kalória-, makrotápanyag- és étkezéstervez
 
 8. **📱 Mobil UX & Adatmentés**
    - Lebegő összefoglaló sáv mobilon, automatikus LocalStorage mentés, nyomtatóbarát nézet.
-   - **Főképernyőre menthető**: saját ikon és név (Vegán Makró), teljes képernyős indítás iOS-en és Androidon.
+   - **Telepíthető alkalmazás (PWA)**: saját ikon és név (Vegán Makró), teljes képernyős indítás iOS-en és Androidon.
+   - **Telepítés gomb** a fejlécben (Chrome / Edge / Android), iOS Safariban pedig egy bezárható tipp-sáv mutatja a „Főképernyőhöz adás” lépéseit.
+   - **Offline működés**: a Service Worker (`sw.js`) gyorsítótárazza az oldalt, az ikonokat és a CDN-könyvtárakat, így az első betöltés után internet nélkül is használható.
 
 > Tájékoztató becslés, nem helyettesíti az orvosi vagy dietetikusi tanácsot.
 
@@ -54,6 +56,8 @@ Nincs szükség szerverre vagy telepítésre, a projekt egyetlen önálló webol
 2. Vagy kapcsold be a **GitHub Pages** szolgáltatást a repóban.
 3. Mobilon (GitHub Pages-ről megnyitva): Safariban **Megosztás → Főképernyőhöz adás**, Androidon Chrome-ban **Hozzáadás a kezdőképernyőhöz**.
 
+> **Megjegyzés:** a Service Worker és a telepítés csak `https`-en (pl. GitHub Pages) vagy `localhost`-on működik, közvetlenül megnyitott fájlból nem. Az oldal a gyorsítótárból indul és a háttérben frissül, ezért egy új verzió általában a **második** megnyitáskor jelenik meg. Nagyobb változásnál érdemes az `sw.js`-ben a `CACHE_NAME` verzióját növelni.
+
 ---
 
 ## 🛠️ Felhasznált Technológiák
@@ -62,6 +66,7 @@ Nincs szükség szerverre vagy telepítésre, a projekt egyetlen önálló webol
 - **Tailwind CSS** (sötét mód támogatással)
 - **Chart.js** (makrotápanyag fánkdiagram)
 - **Lucide Icons** (vektoros ikonok)
+- **PWA**: Web App Manifest (`manifest.webmanifest`) + Service Worker (`sw.js`)
 
 ---
 

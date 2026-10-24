@@ -1,5 +1,5 @@
 // Service Worker for Vegán Makró & Étrend Tervező PWA
-const CACHE_NAME = 'vegan-macro-calc-v1';
+const CACHE_NAME = 'vegan-macro-calc-v2';
 
 const STATIC_ASSETS = [
     './',
@@ -8,7 +8,9 @@ const STATIC_ASSETS = [
     './icons/favicon-32.png',
     './icons/apple-touch-icon.png',
     './icons/icon-192.png',
-    './icons/icon-512.png'
+    './icons/icon-512.png',
+    './icons/maskable-192.png',
+    './icons/maskable-512.png'
 ];
 
 // Install: pre-cache static assets

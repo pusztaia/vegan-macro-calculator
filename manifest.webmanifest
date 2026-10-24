@@ -2,7 +2,7 @@
   "id": "vegan-macro-calculator",
   "name": "Vegán Makró & Étrend Tervező",
   "short_name": "Vegán Makró",
-  "description": "Magas fehérjetartalmú növényi étrend, kalória és testkompozíció kalkulátor",
+  "description": "Növényi étrend- és makrótervező mindenkinek, sport móddal",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -10,19 +10,36 @@
   "background_color": "#f8fafc",
   "theme_color": "#16a34a",
   "lang": "hu",
-  "categories": ["health", "fitness", "lifestyle", "food"],
+  "categories": [
+    "health",
+    "fitness",
+    "lifestyle",
+    "food"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
