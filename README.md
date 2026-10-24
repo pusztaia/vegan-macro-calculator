@@ -1,62 +1,65 @@
 # 🌱 Vegán Makró & Étrend Tervező (Vegan Macro Calculator)
 
-Magas fehérjetartalmú, növényi étrendre optimalizált kalória-, makrotápanyag- és testkompozíció kalkulátor modern webes felülettel, interaktív grafikonnal és részletes növényi táplálkozási útmutatóval.
+Növényi étrendre optimalizált kalória-, makrotápanyag- és étkezéstervező mindenkinek, bekapcsolható **Sport móddal** a rendszeresen edzőknek. Modern webes felület, interaktív grafikon és részletes növényi táplálkozási útmutató.
 
 ---
 
 ## ✨ Főbb Funkciók
 
-1. **🎯 3-Irányú Célválasztó (Goal Mode)**
-   - **Fogyás / Szálkásítás**: Testre szabható deficit (-250, -500, -750 kcal) becsült fogyási időtartam-előrejelzéssel.
-   - **Súlytartás**: Energiaegyensúly (TDEE fenntartó kalória).
-   - **Tömegnövelés (Lean Bulk)**: Tiszta izomtömeg-növelési többlet (+200, +350, +500 kcal).
+1. **🎯 3-Irányú Célválasztó**
+   - **Fogyás**: tempó a testsúly %-ában (0,25–1%/hét), becsült időtartam-tartománnyal.
+   - **Súlytartás**: energiaegyensúly (TDEE).
+   - **Izomépítés**: lassú súlygyarapodás (0,1–0,5%/hét).
+   - A célkalória soha nem megy az alapanyagcsere (BMR) alá.
 
-2. **🔬 Precíz BMR Számítás (Mifflin-St Jeor & Katch-McArdle)**
-   - **Mifflin-St Jeor**: Megbízható általános számítás testsúly, magasság, életkor és nem alapján.
-   - **Katch-McArdle**: Testzsírszázalék és sovány testtömeg (Lean Body Mass - LBM) alapú kalkuláció sportolóknak, gyors vizuális irányadókkal (12%, 16%, 22%, 28%).
+2. **🔬 BMR Számítás**
+   - **Mifflin-St Jeor** (ajánlott, általános), **Katch-McArdle** (testzsír alapján), **Cunningham** (sport módban, izmos sportolóknak).
+   - Nemenként eltérő testzsír-irányadók.
 
-3. **📊 Makró Stratégiák & Növényi Rost Cél**
-   - Előre beállított stratégiák:
-     - *Magas Fehérje / Sportolói* (1.8 – 2.0 g/kg, 25% Zsír)
-     - *Kiegyensúlyozott Vegán* (1.6 g/kg, 28% Zsír)
-     - *Teljes Értékű Növényi / WFPB Alacsony Zsír* (1.4 g/kg, 18% Zsír)
-     - *Egyéni Beállítás* (finomhangolható csúszkák)
-   - **Napi Élelmi Rost Cél**: 14g / 1000 kcal elv alapján (min. 38g férfiaknak, min. 30g nőknek).
-   - **Ajánlott Vízbevitel**: Testsúly és aktivitás szerinti folyadékszükséglet (35–40 ml/kg).
+3. **📊 Makró Stratégiák**
+   - **Ajánlott (automatikus)**: fehérje a cél, az életkor (65+) és a sport mód szerint.
+   - Kiegyensúlyozott, Fehérjedúsabb, Teljes értékű növényi (WFPB), sport módban Sportolói presetek, illetve egyéni csúszkák.
+   - 30 feletti BMI-nél a fehérje referencia-testsúlyra számolódik.
+   - Zsír legalább 0,6 g/kg, szénhidrát-ellenőrzés (45–60%).
+   - Rost: 14 g / 1000 kcal (25–50 g), folyadék: 30–35 ml/kg.
 
-4. **🔄 Bővített Vegán Fehérje Átváltó (Protein Swapper)**
-   - 11 népszerű növényi fehérjeforrás (Tofu, Szejtán, Tempeh, Szójagranulátum/TVP, Sörélesztőpehely, Kendermag, Vegán Fehérjepor, Hüvelyesek).
-   - **Tetszőleges adagméret bevitele** (nem csak fix 100g).
+4. **🏋️ Sport Mód**
+   - Hétköznapi aktivitás + külön megadott edzésenergia (nincs dupla számolás).
+   - **Energiaelérhetőség (EA)** és RED-S figyelmeztetés.
+   - Edzésnapi / pihenőnapi kalória és szénhidrát, ajánlott g/kg tartomány az edzés jellege szerint.
+   - Edzés előtti / utáni étkezések makróihoz igazított elosztás, leucin-tipp.
 
-5. **🍽️ Étkezésekre Bontás & Edzésidőzítés**
-   - 3, 4, 5 vagy 6 étkezéses napi beosztás.
-   - Edzésidőzítési címkék (*Pre-workout szénhidrátfeltöltés*, *Post-workout regeneráció*).
+5. **⚠️ Figyelmeztetések**
+   - 18 év alatti életkor, alacsony (cél) BMI, 65 év feletti gyors fogyás, túl alacsony zsír vagy szénhidrát, BMR alá eső kalória.
 
-6. **🛡️ Vegán Mikrotápanyag Útmutató**
-   - Gyakorlati összefoglaló a növényi étrend kulcstápanyagairól: **B12-vitamin**, **D3-vitamin**, **Omega-3 (ALA & algaolaj DHA/EPA)**, **Vas + C-vitamin szinergia**, **Kalcium**, **Cink és Jód**.
+6. **🔄 Vegán Fehérje Átváltó**
+   - 11 növényi fehérjeforrás fehérjeminőségi megjegyzésekkel (pl. lizin- vagy metioninszegény), tetszőleges adagmérettel.
 
-7. **📱 Kiváló Mobil UX & Adatmentés**
-   - **Lebegő összefoglaló sáv (Sticky Bottom Bar)** mobilon folyamatos élő visszajelzéssel és egyérintéses ugrással az eredmények és űrlap között.
-   - **Automatikus LocalStorage mentés**: Nem vesznek el az adatok oldalfrissítéskor sem.
-   - **Nyomtatás / PDF export**: Nyomtatóbarát (`@media print`) nézet.
+7. **🛡️ Vegán Mikrotápanyag Útmutató**
+   - B12, D3, omega-3, vas + C-vitamin, kalcium, jód, cink, szelén, kreatin és éves laborvizsgálat.
+
+8. **📱 Mobil UX & Adatmentés**
+   - Lebegő összefoglaló sáv mobilon, automatikus LocalStorage mentés, nyomtatóbarát nézet.
+
+> Tájékoztató becslés, nem helyettesíti az orvosi vagy dietetikusi tanácsot.
 
 ---
 
 ## 🚀 Használat és Futtatás
 
-Nincs szükség semmilyen szerverre vagy telepítésre, a projekt egyetlen önálló, könnyűsúlyú weboldal:
+Nincs szükség szerverre vagy telepítésre, a projekt egyetlen önálló weboldal:
 
-1. Nyisd meg az `index.html` fájlt közvetlenül bármelyik modern böngészőben (Chrome, Firefox, Safari, Edge).
-2. Vagy kapcsold be a **GitHub Pages** szolgáltatást a repóban, és azonnal elérhető lesz élő weboldalként.
+1. Nyisd meg az `index.html` fájlt bármelyik modern böngészőben.
+2. Vagy kapcsold be a **GitHub Pages** szolgáltatást a repóban.
 
 ---
 
 ## 🛠️ Felhasznált Technológiák
 
-- **HTML5 & Vanilla JavaScript** (Zero build tools, teljesen kliensoldali)
-- **Tailwind CSS** (Modern, letisztult, sötét mód támogatással)
-- **Chart.js** (Interaktív makrotápanyag fánkdiagram)
-- **Lucide Icons** (Vektoros ikonok)
+- **HTML5 & Vanilla JavaScript** (build eszközök nélkül, teljesen kliensoldali)
+- **Tailwind CSS** (sötét mód támogatással)
+- **Chart.js** (makrotápanyag fánkdiagram)
+- **Lucide Icons** (vektoros ikonok)
 
 ---
 

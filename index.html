@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegán Makró & Étrend Tervező - Magas Fehérjetartalmú Kalkulátor</title>
+    <title>Vegán Makró & Étrend Tervező</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -85,10 +85,10 @@
                 </div>
                 <div class="min-w-0">
                     <h1 class="text-base sm:text-xl font-bold text-slate-900 dark:text-white leading-tight truncate">Vegán Makró & Étrend Tervező</h1>
-                    <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">Magas Fehérjetartalmú Növényi Testkompozíció</p>
+                    <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">Növényi étrend- és makrótervező mindenkinek</p>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <button onclick="window.print()" title="Összegzés Nyomtatása / PDF" class="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center gap-1.5 text-xs font-semibold">
                     <i data-lucide="printer" class="w-4 h-4"></i>
@@ -107,11 +107,11 @@
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+
         <!-- Left Column: Input Form -->
         <section class="lg:col-span-5 space-y-5">
             <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
-                
+
                 <div class="flex items-center justify-between mb-4 sm:mb-5">
                     <div class="flex items-center gap-2">
                         <i data-lucide="sliders" class="w-5 h-5 text-brand-600 dark:text-brand-500"></i>
@@ -129,7 +129,20 @@
                 </div>
 
                 <form id="calcForm" class="space-y-4" onsubmit="event.preventDefault();">
-                    
+
+                    <!-- 0. Sport Mode Toggle -->
+                    <label class="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 cursor-pointer">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <i data-lucide="dumbbell" class="w-5 h-5 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                            <div class="min-w-0">
+                                <span class="block text-sm font-semibold text-slate-900 dark:text-white">Rendszeresen edzek (Sport mód)</span>
+                                <span class="block text-[11px] text-slate-400">Edzésenergia, szénhidrát edzésnapra, energiaelérhetőség</span>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="sportMode" class="peer sr-only" onchange="onSportModeChange(); calculate();">
+                        <div class="relative w-10 h-6 shrink-0 bg-slate-300 dark:bg-slate-600 rounded-full transition-colors peer-checked:bg-brand-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                    </label>
+
                     <!-- 1. Goal Mode Selector (3-way) -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Cél Kiválasztása</label>
@@ -152,7 +165,7 @@
                                 <input type="radio" name="goalMode" value="bulk" class="peer sr-only" onchange="onGoalModeChange(); calculate();">
                                 <div class="py-2.5 px-1.5 sm:px-2 text-center rounded-xl border border-slate-200 dark:border-slate-700 peer-checked:border-brand-500 peer-checked:bg-brand-50 dark:peer-checked:bg-brand-900/40 peer-checked:text-brand-700 dark:peer-checked:text-brand-300 font-semibold text-[11px] sm:text-xs transition-all flex flex-col sm:flex-row items-center justify-center gap-1">
                                     <i data-lucide="trending-up" class="w-4 h-4 text-amber-500"></i>
-                                    <span>Tömegelés</span>
+                                    <span>Izomépítés</span>
                                 </div>
                             </label>
                         </div>
@@ -163,13 +176,13 @@
                         <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Biológiai Nem</label>
                         <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
                             <label class="cursor-pointer">
-                                <input type="radio" name="gender" value="male" class="peer sr-only" checked onchange="calculate()">
+                                <input type="radio" name="gender" value="male" class="peer sr-only" checked onchange="renderBodyFatPresets(); calculate();">
                                 <div class="py-2.5 px-3 text-center rounded-xl border border-slate-200 dark:border-slate-700 peer-checked:border-brand-500 peer-checked:bg-brand-50 dark:peer-checked:bg-brand-900/30 peer-checked:text-brand-700 dark:peer-checked:text-brand-400 font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
                                     <i data-lucide="user" class="w-4 h-4"></i> Férfi
                                 </div>
                             </label>
                             <label class="cursor-pointer">
-                                <input type="radio" name="gender" value="female" class="peer sr-only" onchange="calculate()">
+                                <input type="radio" name="gender" value="female" class="peer sr-only" onchange="renderBodyFatPresets(); calculate();">
                                 <div class="py-2.5 px-3 text-center rounded-xl border border-slate-200 dark:border-slate-700 peer-checked:border-brand-500 peer-checked:bg-brand-50 dark:peer-checked:bg-brand-900/30 peer-checked:text-brand-700 dark:peer-checked:text-brand-400 font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
                                     <i data-lucide="user-check" class="w-4 h-4"></i> Nő
                                 </div>
@@ -181,7 +194,7 @@
                     <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
                         <div>
                             <label for="currentWeight" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Jelenlegi Súly (kg)</label>
-                            <input type="number" id="currentWeight" value="78" min="30" max="250" step="0.5" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
+                            <input type="number" id="currentWeight" value="78" min="30" max="250" step="0.5" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="buildPaceOptions(); calculate();">
                         </div>
                         <div id="targetWeightContainer">
                             <label for="targetWeight" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1" id="targetWeightLabel">Cél Súly (kg)</label>
@@ -197,7 +210,7 @@
                         </div>
                         <div>
                             <label for="age" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Életkor (év)</label>
-                            <input type="number" id="age" value="30" min="14" max="100" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
+                            <input type="number" id="age" value="30" min="18" max="100" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
                         </div>
                     </div>
 
@@ -208,44 +221,62 @@
                             <span class="text-[11px] text-slate-400" id="formulaHint">Mifflin-St Jeor</span>
                         </div>
                         <select id="bmrFormula" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-medium" onchange="onFormulaChange(); calculate();">
-                            <option value="mifflin" selected>Mifflin-St Jeor (Standard, általános)</option>
-                            <option value="katch">Katch-McArdle (Testzsír % & Sovány Izomtömeg)</option>
+                            <option value="mifflin" selected>Mifflin-St Jeor (ajánlott, általános)</option>
+                            <option value="katch">Katch-McArdle (ha ismered a testzsírodat)</option>
+                            <option value="cunningham">Cunningham (izmos sportolóknak)</option>
                         </select>
                     </div>
 
-                    <!-- 6. Body Fat % Field (Visible when Katch-McArdle is selected) -->
+                    <!-- 6. Body Fat % Field (Visible for LBM formulas or in sport mode) -->
                     <div id="bodyFatContainer" class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-brand-200 dark:border-brand-900/50 space-y-2 hidden">
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center gap-2">
                             <label for="bodyFat" class="text-xs font-semibold text-slate-700 dark:text-slate-300">Becsült Testzsírszázalék (%)</label>
-                            <span id="lbmBadge" class="text-xs font-bold text-brand-700 dark:text-brand-300 bg-brand-100 dark:bg-brand-900/50 px-2 py-0.5 rounded">LBM: -- kg</span>
+                            <span id="lbmBadge" class="text-xs font-bold text-brand-700 dark:text-brand-300 bg-brand-100 dark:bg-brand-900/50 px-2 py-0.5 rounded text-right">LBM: -- kg</span>
                         </div>
-                        <input type="number" id="bodyFat" value="16" min="4" max="55" step="0.5" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
-                        <div class="flex flex-wrap gap-1.5 pt-1 text-[11px]">
-                            <span class="text-slate-400">Irányadók:</span>
-                            <button type="button" onclick="setBodyFat(12)" class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 hover:bg-brand-100 dark:hover:bg-brand-900/40 text-slate-700 dark:text-slate-300">12% (Szálkás)</button>
-                            <button type="button" onclick="setBodyFat(16)" class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 hover:bg-brand-100 dark:hover:bg-brand-900/40 text-slate-700 dark:text-slate-300">16% (Fitt)</button>
-                            <button type="button" onclick="setBodyFat(22)" class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 hover:bg-brand-100 dark:hover:bg-brand-900/40 text-slate-700 dark:text-slate-300">22% (Átlagos)</button>
-                            <button type="button" onclick="setBodyFat(28)" class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 hover:bg-brand-100 dark:hover:bg-brand-900/40 text-slate-700 dark:text-slate-300">28% (Magasabb)</button>
+                        <input type="number" id="bodyFat" value="18" min="4" max="55" step="0.5" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
+                        <div id="bodyFatPresets" class="flex flex-wrap gap-1.5 pt-1 text-[11px]">
+                            <!-- Gender specific presets via renderBodyFatPresets() -->
                         </div>
                     </div>
 
                     <!-- 7. Activity Level -->
                     <div>
-                        <label for="activity" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Aktivitási Szint</label>
+                        <label for="activity" id="activityLabel" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Aktivitási Szint</label>
                         <select id="activity" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm" onchange="calculate()">
-                            <option value="1.2">Ülő életmód (kevés vagy semmi edzés)</option>
-                            <option value="1.375" selected>Mérsékelten aktív (sport heti 1-3 alkalommal)</option>
-                            <option value="1.55">Aktív (rendszeres sport heti 3-5 alkalommal)</option>
-                            <option value="1.725">Nagyon aktív (intenzív edzés heti 6-7 alkalommal)</option>
-                            <option value="1.9">Extrém aktív (nehéz fizikai munka + kemény edzés)</option>
+                            <!-- Populated via onSportModeChange() -->
                         </select>
+                        <p id="activityHint" class="text-[11px] text-slate-400 mt-1 hidden">Sport módban itt csak a hétköznapi mozgást add meg, az edzés energiáját lent külön számoljuk (így nem számolódik kétszer).</p>
+                    </div>
+
+                    <!-- 7b. Sport Fields -->
+                    <div id="sportFields" class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-brand-200 dark:border-brand-900/50 space-y-3 hidden">
+                        <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
+                            <div>
+                                <label for="trainKcal" class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Edzés energia (kcal / edzés)</label>
+                                <input type="number" id="trainKcal" value="400" min="0" max="3000" step="50" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
+                            </div>
+                            <div>
+                                <label for="trainDays" class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Edzésnapok / hét</label>
+                                <input type="number" id="trainDays" value="4" min="0" max="7" step="1" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-semibold" oninput="calculate()">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="trainType" class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Edzés jellege</label>
+                            <select id="trainType" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm" onchange="calculate()">
+                                <option value="light">Könnyű / technikai (jóga, könnyű erősítés)</option>
+                                <option value="moderate" selected>Közepes, kb. 1 óra/nap (erősítés, csapatsport)</option>
+                                <option value="endurance">Állóképességi, 1–3 óra/nap (futás, kerékpár)</option>
+                                <option value="extreme">Extrém, 4+ óra/nap (ultra, triatlon)</option>
+                            </select>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Tipp: az edzés energiáját sportórád vagy a Strava mutatja. Az órák gyakran túlbecsülik, inkább a kisebb értéket add meg.</p>
                     </div>
 
                     <!-- 8. Pace / Caloric Adjustment (Dynamic depending on goal) -->
                     <div id="calorieAdjustmentContainer">
-                        <label for="calorieAdjustment" id="calAdjTitle" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Fogyási Tempó / Deficit</label>
+                        <label for="calorieAdjustment" id="calAdjTitle" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Fogyási Tempó</label>
                         <select id="calorieAdjustment" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-medium" onchange="calculate()">
-                            <!-- Populated dynamically via onGoalModeChange() -->
+                            <!-- Populated dynamically via buildPaceOptions() -->
                         </select>
                     </div>
 
@@ -253,10 +284,7 @@
                     <div>
                         <label for="macroPreset" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Makró Stratégia</label>
                         <select id="macroPreset" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition text-base sm:text-sm font-medium" onchange="onMacroPresetChange(); calculate();">
-                            <option value="high_protein" selected>Magas Fehérje / Sportolói (1.8 - 2.0 g/kg, 25% Zsír)</option>
-                            <option value="balanced">Kiegyensúlyozott Vegán (1.6 g/kg, 28% Zsír)</option>
-                            <option value="wfpb_hclf">Teljes Értékű Növényi WFPB (1.4 g/kg, 18% Alacsony Zsír)</option>
-                            <option value="custom">Egyéni Beállítás (Csúszkákkal)</option>
+                            <!-- Populated via buildPresetOptions() -->
                         </select>
                     </div>
 
@@ -265,27 +293,44 @@
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label for="proteinRatio" class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fehérje / Testtömegkg</label>
-                                <span id="proteinRatioVal" class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/40 px-2 py-0.5 rounded">1.8 g/kg</span>
+                                <span id="proteinRatioVal" class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/40 px-2 py-0.5 rounded">1.4 g/kg</span>
                             </div>
-                            <input type="range" id="proteinRatio" min="1.2" max="2.6" step="0.1" value="1.8" class="w-full accent-brand-500 cursor-pointer" oninput="onCustomMacroSliderInput(); calculate();">
+                            <input type="range" id="proteinRatio" min="0.8" max="2.6" step="0.1" value="1.4" class="w-full accent-brand-500 cursor-pointer" oninput="onCustomMacroSliderInput(); calculate();">
+                            <p id="proteinHint" class="text-[11px] text-slate-400 mt-0.5">Ajánlott: --</p>
                         </div>
 
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label for="fatRatio" class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Zsír Részarány (% kcal)</label>
-                                <span id="fatRatioVal" class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/40 px-2 py-0.5 rounded">25 %</span>
+                                <span id="fatRatioVal" class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/40 px-2 py-0.5 rounded">30 %</span>
                             </div>
-                            <input type="range" id="fatRatio" min="15" max="38" step="1" value="25" class="w-full accent-amber-500 cursor-pointer" oninput="onCustomMacroSliderInput(); calculate();">
+                            <input type="range" id="fatRatio" min="15" max="40" step="1" value="30" class="w-full accent-amber-500 cursor-pointer" oninput="onCustomMacroSliderInput(); calculate();">
+                            <p class="text-[11px] text-slate-400 mt-0.5">Ajánlott: 20–35%, de legalább 0,6 g/kg</p>
                         </div>
                     </div>
 
                 </form>
+
+                <!-- Disclaimer -->
+                <div class="mt-5 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 flex gap-2.5 text-[11px] text-slate-500 dark:text-slate-400">
+                    <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
+                    <p>Tájékoztató becslés, nem helyettesíti az orvosi vagy dietetikusi tanácsot. Terhesség, szoptatás, krónikus betegség (pl. vese-, pajzsmirigy-, cukorbetegség), evészavar a kórtörténetben vagy 18 év alatti életkor esetén kérj személyre szabott tanácsot szakembertől.</p>
+                </div>
             </div>
         </section>
 
         <!-- Right Column: Results & Interactive Tools -->
         <section id="resultsSection" class="lg:col-span-7 space-y-5 sm:space-y-6">
-            
+
+            <!-- Warnings -->
+            <div id="warningsBox" class="hidden bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-amber-200 dark:border-amber-900/50 shadow-sm space-y-2">
+                <div class="flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+                    Figyelmeztetések & Tippek
+                </div>
+                <ul id="warningsList" class="space-y-1.5 text-xs"></ul>
+            </div>
+
             <!-- Key Metric Cards Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3.5">
                 <!-- Target Calories Card -->
@@ -318,7 +363,7 @@
                         <i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i>
                     </div>
                     <div class="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white" id="timelineVal">0 hét</div>
-                    <div class="text-[10px] sm:text-[11px] text-slate-400 mt-1 truncate" id="weightDiffText">4.0 kg elérése</div>
+                    <div class="text-[10px] sm:text-[11px] text-slate-400 mt-1" id="weightDiffText">4.0 kg elérése</div>
                 </div>
             </div>
 
@@ -332,10 +377,10 @@
                         </div>
                         <div>
                             <span class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">Cél Napi Rost</span>
-                            <div class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white" id="fiberVal">~38 g / nap</div>
+                            <div class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white" id="fiberVal">~30 g / nap</div>
                         </div>
                     </div>
-                    <span class="text-[10px] sm:text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/40 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">14g / 1000 kcal</span>
+                    <span class="text-[10px] sm:text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/40 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">14g / 1000 kcal, 25–50 g</span>
                 </div>
 
                 <!-- Water Intake Card -->
@@ -345,17 +390,53 @@
                             <i data-lucide="droplet" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </div>
                         <div>
-                            <span class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">Ajánlott Víz</span>
-                            <div class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white" id="waterVal">~2.8 - 3.2 L</div>
+                            <span class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">Ajánlott Folyadék</span>
+                            <div class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white" id="waterVal">~2.3 - 2.7 L</div>
                         </div>
                     </div>
-                    <span class="text-[10px] sm:text-[11px] font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/40 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">35-40 ml / kg</span>
+                    <span id="waterHint" class="text-[10px] sm:text-[11px] font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/40 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">30-35 ml / kg</span>
                 </div>
+            </div>
+
+            <!-- Sport Card (Sport mode only) -->
+            <div id="sportCard" class="hidden bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <h3 class="text-base sm:text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i data-lucide="dumbbell" class="w-5 h-5 text-brand-500"></i>
+                    Sportolói Táplálás
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                        <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Energiaelérhetőség (EA)</span>
+                        <div class="text-lg font-bold" id="eaVal">--</div>
+                        <span class="text-[11px] text-slate-400" id="eaText">kcal / kg sovány tömeg</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                        <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Edzésnap</span>
+                        <div class="text-lg font-bold text-slate-900 dark:text-white" id="trainDayVal">--</div>
+                        <span class="text-[11px] text-slate-400" id="trainDayCarbs">--</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                        <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Pihenőnap</span>
+                        <div class="text-lg font-bold text-slate-900 dark:text-white" id="restDayVal">--</div>
+                        <span class="text-[11px] text-slate-400" id="restDayCarbs">--</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-600 dark:text-slate-300">
+                    <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700/70 space-y-1">
+                        <span class="font-bold text-slate-900 dark:text-white block">Szénhidrát edzésnapon</span>
+                        <p id="carbRangeText">--</p>
+                    </div>
+                    <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700/70 space-y-1">
+                        <span class="font-bold text-slate-900 dark:text-white block">Folyadék & nátrium edzéskor</span>
+                        <p>Edzés közben 0,4–0,8 L / óra. Utána a leadott testsúly 125–150%-át pótold (1 kg = 1,25–1,5 L). Erős izzadásnál vagy 1 óránál hosszabb edzésnél nátriumot is (elektrolit, sós étel).</p>
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400">Az edzésnapi és pihenőnapi kalória heti összege megegyezik a napi átlag × 7 értékkel. A különbséget a szénhidrát adja.</p>
             </div>
 
             <!-- Macro Breakdown Card -->
             <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mb-4 gap-2">
                     <h3 class="text-base sm:text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                         <i data-lucide="pie-chart" class="w-5 h-5 text-brand-500"></i>
                         Makrotápanyag Eloszlás
@@ -440,14 +521,16 @@
                 <!-- Tab 1: Meal Splitter -->
                 <div id="tabMeal" class="p-5 sm:p-6 space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Napi makrók és edzésidőzítési elosztás az étkezésekre:</p>
-                        <select id="mealCount" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white" onchange="updateMealSplit()">
+                        <p class="text-xs text-slate-500 dark:text-slate-400" id="mealIntro">Napi makrók elosztása az étkezésekre:</p>
+                        <select id="mealCount" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white" onchange="updateMealSplit(); saveToStorage();">
                             <option value="3">3 Étkezés</option>
-                            <option value="4" selected>4 Étkezés (3 fő + 1 uzsonna/snack)</option>
+                            <option value="4" selected>4 Étkezés (3 fő + 1 uzsonna)</option>
                             <option value="5">5 Étkezés (3 fő + tízórai + uzsonna)</option>
                             <option value="6">6 Kisebb Étkezés</option>
                         </select>
                     </div>
+
+                    <p id="mealProteinTip" class="text-[11px] text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-2 rounded-lg"></p>
 
                     <div id="mealSplitList" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                         <!-- Dynamic meal split cards insertion -->
@@ -463,7 +546,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <label for="swapBaseGrams" class="text-xs font-semibold text-slate-500 dark:text-slate-400">Adag (g):</label>
-                            <input type="number" id="swapBaseGrams" value="100" min="10" max="1000" step="10" class="w-20 px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white text-right" oninput="renderSwaps()">
+                            <input type="number" id="swapBaseGrams" value="100" min="10" max="1000" step="10" class="w-20 px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white text-right" oninput="renderSwaps(); saveToStorage();">
                         </div>
                     </div>
 
@@ -473,12 +556,15 @@
                     </div>
 
                     <div id="swapResultsContainer" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 space-y-3">
-                        <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
-                            <span id="selectedSourceLabel" class="font-bold text-slate-900 dark:text-white text-sm">100g Tofu</span>
-                            <span id="selectedSourceProtein" class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/40 px-2 py-0.5 rounded">~16g Fehérje</span>
+                        <div class="flex justify-between items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-2">
+                            <div>
+                                <span id="selectedSourceLabel" class="font-bold text-slate-900 dark:text-white text-sm block">100g Tofu</span>
+                                <span id="selectedSourceNote" class="text-[11px] text-slate-400"></span>
+                            </div>
+                            <span id="selectedSourceProtein" class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/40 px-2 py-0.5 rounded shrink-0">~16g Fehérje</span>
                         </div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400">Ugyanennyi fehérjéhez az alábbi adagok szükségesek a többi vegán forrásból:</div>
-                        
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Ugyanennyi fehérjéhez az alábbi adagok kellenek a többi vegán forrásból. A fehérje minősége (aminosav-összetétele) eltérő, ezért érdemes a forrásokat kombinálni.</div>
+
                         <div id="swapList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                             <!-- Dynamic Swaps -->
                         </div>
@@ -490,81 +576,129 @@
                     <div class="flex items-center justify-between pb-1">
                         <div>
                             <h4 class="text-sm font-bold text-slate-900 dark:text-white">Kritikus Vegán Mikrotápanyagok & Felszívódási Tippek</h4>
-                            <p class="text-xs text-slate-400">Teljes értékű növényi étrend kulcstápanyagai a maximális vitalitásért</p>
+                            <p class="text-xs text-slate-400">Ezek mindenkire vonatkoznak, aki növényi étrendet követ</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <!-- B12 -->
                         <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center gap-2">
                                 <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span> B12-vitamin
                                 </span>
                                 <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/40 px-1.5 py-0.5 rounded">Kötelező kiegészítés</span>
                             </div>
-                            <p class="text-slate-600 dark:text-slate-300">Napi 25-100 mcg vagy heti 1× 2000-2500 mcg cianokobalamin rágótabletta/csepp formájában.</p>
-                            <p class="text-[11px] text-slate-400">Növényi étrendből megbízhatóan nem fedezhető talajkimerülés miatt.</p>
+                            <p class="text-slate-600 dark:text-slate-300">Napi 50 µg vagy heti 1× 2000 µg cianokobalamin rágótabletta/csepp formájában.</p>
+                            <p class="text-[11px] text-slate-400">Növényi étrendből megbízhatóan nem fedezhető.</p>
                         </div>
 
                         <!-- Vitamin D3 -->
                         <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center gap-2">
                                 <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-amber-500"></span> D3-vitamin
                                 </span>
-                                <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/40 px-1.5 py-0.5 rounded">2000-3000 NE / nap</span>
+                                <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/40 px-1.5 py-0.5 rounded">2000 NE / nap</span>
                             </div>
-                            <p class="text-slate-600 dark:text-slate-300">Vegán zuzmó (lichen) eredetű D3-vitamin, különösen az őszi-téli hónapokban (október-április).</p>
-                            <p class="text-[11px] text-slate-400">Támogatja a kalcium beépülését és az immunrendszert.</p>
+                            <p class="text-slate-600 dark:text-slate-300">Vegán zuzmó (lichen) eredetű D3-vitamin, különösen októbertől áprilisig.</p>
+                            <p class="text-[11px] text-slate-400">Az adag a vérszint (25(OH)D) alapján pontosítható.</p>
                         </div>
 
                         <!-- Omega-3 -->
                         <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center gap-2">
                                 <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-blue-500"></span> Omega-3 (ALA & DHA/EPA)
                                 </span>
-                                <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40 px-1.5 py-0.5 rounded">Napi 1-2 ek.</span>
+                                <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40 px-1.5 py-0.5 rounded">Algaolaj 250-500 mg</span>
                             </div>
-                            <p class="text-slate-600 dark:text-slate-300">ALA: Frissen őrölt lenmag, chia mag, dió, kendermag. DHA/EPA: Mikroalga olaj kapszula (250-500 mg).</p>
+                            <p class="text-slate-600 dark:text-slate-300">ALA: napi 1-2 ek. frissen őrölt lenmag vagy chia, dió, kendermag. DHA/EPA: mikroalga olaj kapszula.</p>
                             <p class="text-[11px] text-slate-400">Az algaolaj közvetlen, tiszta forrás (a halak is innen nyerik!).</p>
                         </div>
 
                         <!-- Iron + Vit C -->
                         <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center gap-2">
                                 <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span> Vas + C-vitamin Szinergia
+                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span> Vas + C-vitamin
                                 </span>
-                                <span class="text-[10px] font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/40 px-1.5 py-0.5 rounded">3-4× felszívódás</span>
+                                <span class="text-[10px] font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/40 px-1.5 py-0.5 rounded">akár 2-3× felszívódás</span>
                             </div>
-                            <p class="text-slate-600 dark:text-slate-300">Lencse, zabpehely, tökmag, spenót, tofu + citromlé, paprika, brokkoli.</p>
-                            <p class="text-[11px] text-slate-400">Tipp: Kávét, fekete teát ne igyál étkezés közben, mert gátolják a vasfelszívódást.</p>
+                            <p class="text-slate-600 dark:text-slate-300">Lencse, zabpehely, tökmag, tofu, spenót + C-vitamin (citromlé, paprika, brokkoli) ugyanabban az étkezésben.</p>
+                            <p class="text-[11px] text-slate-400">Vegánoknak kb. 1,8× több vas kell. Kávét, teát étkezés után 1 órával igyál. Nőknek évente érdemes ferritint méretni.</p>
                         </div>
 
                         <!-- Calcium -->
                         <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center gap-2">
                                 <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-cyan-500"></span> Kalcium
                                 </span>
                                 <span class="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/40 px-1.5 py-0.5 rounded">~1000 mg / nap</span>
                             </div>
                             <p class="text-slate-600 dark:text-slate-300">Kalciummal dúsított növényi tejek, kalcium-szulfáttal oltott tofu, tahini (szezámpaszta), kelkáposzta, mandula.</p>
-                            <p class="text-[11px] text-slate-400">2 pohár dúsított növényi tej már fedezi a napi szükséglet 60%-át.</p>
+                            <p class="text-[11px] text-slate-400">2 pohár dúsított növényi tej már fedezi a napi szükséglet kb. 60%-át.</p>
                         </div>
 
-                        <!-- Zinc & Iodine -->
+                        <!-- Iodine -->
                         <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center gap-2">
                                 <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span> Cink & Jód
+                                    <span class="w-2 h-2 rounded-full bg-indigo-500"></span> Jód
                                 </span>
-                                <span class="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 px-1.5 py-0.5 rounded">Alapvető nyomelemek</span>
+                                <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/40 px-1.5 py-0.5 rounded">150 µg / nap</span>
                             </div>
-                            <p class="text-slate-600 dark:text-slate-300">Cink: Tökmag, hüvelyesek, kendermag. Jód: Jódozott asztali só (fél tk / nap) vagy nori hínárlap.</p>
-                            <p class="text-[11px] text-slate-400">Az áztatás és kovászolás csökkenti a fitinsavat, növelve a cink biohasznosulását.</p>
+                            <p class="text-slate-600 dark:text-slate-300">Legbiztosabb étrend-kiegészítőből (kálium-jodid). A hazai jódozott só jódtartalma alacsony, nem fedezi a szükségletet.</p>
+                            <p class="text-[11px] text-slate-400">A hínárok jódtartalma kiszámíthatatlan, a kombu/kelp túladagolást is okozhat. Pajzsmirigybetegség esetén orvossal egyeztess.</p>
+                        </div>
+
+                        <!-- Zinc -->
+                        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span> Cink
+                                </span>
+                                <span class="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 px-1.5 py-0.5 rounded">~1,5× szükséglet</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300">Tökmag, hüvelyesek, kendermag, zab, kesudió.</p>
+                            <p class="text-[11px] text-slate-400">Az áztatás, csíráztatás és kovászolás csökkenti a fitinsavat, növelve a cink felszívódását.</p>
+                        </div>
+
+                        <!-- Selenium -->
+                        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-orange-500"></span> Szelén
+                                </span>
+                                <span class="text-[10px] font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/40 px-1.5 py-0.5 rounded">1-2 paradió / nap</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300">Az európai talajok szelénben szegények, napi 1-2 szem paradió fedezi a szükségletet.</p>
+                            <p class="text-[11px] text-slate-400">Többet ne egyél rendszeresen, a szelén túladagolható.</p>
+                        </div>
+
+                        <!-- Creatine -->
+                        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-teal-500"></span> Kreatin
+                                </span>
+                                <span id="creatineBadge" class="text-[10px] font-bold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/40 px-1.5 py-0.5 rounded">Megfontolandó</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300">Kreatin-monohidrát napi 3-5 g. Vegánoknál az izmok kreatinraktára alacsonyabb, ezért náluk jobban hat: izomerő, regeneráció, idősebb korban az izomtömeg megőrzése.</p>
+                            <p id="creatineSportNote" class="text-[11px] text-slate-400 hidden">Sportolóknak a béta-alanin (napi 3,2-6,4 g) is szóba jöhet, mert vegánoknál alacsonyabb az izom karnozinszintje.</p>
+                        </div>
+
+                        <!-- Lab tests -->
+                        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50/60 dark:bg-slate-900/30 space-y-1.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-slate-500"></span> Éves laborvizsgálat
+                                </span>
+                                <span class="text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded">Ajánlott</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300">B12 (holoTC vagy MMA, a szérum B12 félrevezető lehet), ferritin + vérkép, 25(OH)D, TSH.</p>
+                            <p class="text-[11px] text-slate-400">Így időben kiderül, ha valamelyik kiegészítő adagján módosítani kell.</p>
                         </div>
                     </div>
                 </div>
@@ -605,80 +739,247 @@
     <!-- Footer -->
     <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-4 text-center text-xs text-slate-400 mt-auto">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <span>Vegán Makró & Étrend Tervező &bull; Fenntartható növényi alapú testkompozíció</span>
-            <span>Mifflin-St Jeor & Katch-McArdle szabvány</span>
+            <span>Vegán Makró & Étrend Tervező &bull; Növényi étrend mindenkinek</span>
+            <span>Mifflin-St Jeor, Katch-McArdle & Cunningham</span>
         </div>
     </footer>
 
     <!-- Logic Script -->
     <script>
-        // Storage key
-        const STORAGE_KEY = 'vegan_macro_calc_v2';
+        // Storage key (v3: pace is stored as % body weight / week)
+        const STORAGE_KEY = 'vegan_macro_calc_v3';
 
         // Chart Instance
         let macroChartInstance = null;
 
+        // Last calculated macros for the meal splitter
+        let lastMacros = null;
+
         // Expanded Vegan Protein Database (per 100g raw/cooked as consumed)
         const veganProteinSources = [
-            { id: 'tofu', name: 'Tofu (Füstölt / Natúr)', protein: 16, kcal: 140 },
-            { id: 'seitan', name: 'Szejtán (Búzafehérje)', protein: 25, kcal: 150 },
-            { id: 'tempeh', name: 'Tempeh (Erjesztett szója)', protein: 19, kcal: 192 },
-            { id: 'tvp', name: 'Szójagranulátum (száraz TVP)', protein: 50, kcal: 320 },
-            { id: 'protein_powder', name: 'Vegán Fehérjepor (borsó/rizs)', protein: 75, kcal: 380 },
-            { id: 'nutritional_yeast', name: 'Sörélesztőpehely', protein: 45, kcal: 340 },
-            { id: 'hemp_seeds', name: 'Hámozott Kendermag', protein: 32, kcal: 560 },
-            { id: 'edamame', name: 'Edamame bab', protein: 11, kcal: 120 },
-            { id: 'lentils', name: 'Vöröslencse (főtt)', protein: 9, kcal: 116 },
-            { id: 'chickpeas', name: 'Csicseriborsó (főtt)', protein: 8.9, kcal: 164 },
-            { id: 'black_beans', name: 'Fekete bab (főtt)', protein: 8.8, kcal: 132 }
+            { id: 'tofu', name: 'Tofu (Füstölt / Natúr)', protein: 16, kcal: 140, note: 'Teljes értékű (szója)' },
+            { id: 'seitan', name: 'Szejtán (Búzafehérje)', protein: 25, kcal: 150, note: 'Lizinszegény, hüvelyessel kombináld' },
+            { id: 'tempeh', name: 'Tempeh (Erjesztett szója)', protein: 19, kcal: 192, note: 'Teljes értékű (szója)' },
+            { id: 'tvp', name: 'Szójagranulátum (száraz TVP)', protein: 50, kcal: 320, note: 'Teljes értékű (szója)' },
+            { id: 'protein_powder', name: 'Vegán Fehérjepor (borsó/rizs)', protein: 75, kcal: 380, note: 'Borsó + rizs keverék: teljes értékű' },
+            { id: 'nutritional_yeast', name: 'Táplálékélesztő-pehely', protein: 45, kcal: 340, note: 'Inkább ízesítő, kis adagban reális' },
+            { id: 'hemp_seeds', name: 'Hámozott Kendermag', protein: 32, kcal: 560, note: 'Lizinben szegényebb, energiadús' },
+            { id: 'edamame', name: 'Edamame bab', protein: 11, kcal: 120, note: 'Teljes értékű (szója)' },
+            { id: 'lentils', name: 'Lencse (főtt)', protein: 9, kcal: 116, note: 'Metioninszegény, gabonával kombináld' },
+            { id: 'chickpeas', name: 'Csicseriborsó (főtt)', protein: 8.9, kcal: 164, note: 'Metioninszegény, gabonával kombináld' },
+            { id: 'black_beans', name: 'Fekete bab (főtt)', protein: 8.8, kcal: 132, note: 'Metioninszegény, gabonával kombináld' }
         ];
 
         let selectedSourceId = 'tofu';
 
+        // Activity multipliers: general PAL vs. everyday activity without training (sport mode)
+        const GENERAL_ACTIVITY = [
+            { value: '1.2', label: 'Ülő életmód (kevés vagy semmi mozgás)' },
+            { value: '1.375', label: 'Enyhén aktív (heti 1-3 alkalom mozgás)', default: true },
+            { value: '1.55', label: 'Aktív (heti 3-5 alkalom mozgás)' },
+            { value: '1.725', label: 'Nagyon aktív (heti 6-7 alkalom intenzív mozgás)' },
+            { value: '1.9', label: 'Extrém aktív (nehéz fizikai munka + edzés)' }
+        ];
+        const SPORT_ACTIVITY = [
+            { value: '1.25', label: 'Ülő munka, kevés gyaloglás' },
+            { value: '1.4', label: 'Könnyű napi mozgás (6-8 ezer lépés)', default: true },
+            { value: '1.55', label: 'Sokat álló / gyalogló munka (10 ezer+ lépés)' },
+            { value: '1.7', label: 'Nehéz fizikai munka' }
+        ];
+
+        // Macro presets (protein g/kg reference weight, fat % kcal)
+        const PRESETS = {
+            balanced: { p: 1.0, f: 30, label: 'Kiegyensúlyozott (1,0 g/kg, 30% zsír)' },
+            protein_plus: { p: 1.4, f: 28, label: 'Fehérjedúsabb (1,4 g/kg, 28% zsír)' },
+            wfpb: { p: 0.9, f: 20, label: 'Teljes értékű növényi, alacsony zsír (0,9 g/kg, 20% zsír)' },
+            athlete: { p: 1.8, f: 25, label: 'Sportolói (1,8 g/kg, 25% zsír)', sport: true },
+            athlete_cut: { p: 2.2, f: 25, label: 'Sportolói szálkásítás (2,2 g/kg, 25% zsír)', sport: true }
+        };
+
+        // Carbohydrate ranges (g/kg) by training type
+        const CARB_RANGES = {
+            light: { min: 3, max: 5 },
+            moderate: { min: 5, max: 7 },
+            endurance: { min: 6, max: 10 },
+            extreme: { min: 8, max: 12 }
+        };
+
+        // Gender specific body fat reference points
+        const BODY_FAT_PRESETS = {
+            male: [[10, 'Szálkás'], [15, 'Fitt'], [20, 'Átlagos'], [25, 'Magasabb']],
+            female: [[18, 'Szálkás'], [23, 'Fitt'], [28, 'Átlagos'], [33, 'Magasabb']]
+        };
+
+        // Meal plans; sport: 'pre' / 'post' marks the workout-timed meals in sport mode
+        const MEAL_PLANS = {
+            3: [
+                { name: 'Reggeli', ratio: 0.30, tag: 'Fehérje + teljes értékű gabona' },
+                { name: 'Ebéd', ratio: 0.40, tag: 'Főétkezés: hüvelyes + zöldség', sport: 'pre' },
+                { name: 'Vacsora', ratio: 0.30, tag: 'Könnyebb főétkezés', sport: 'post' }
+            ],
+            4: [
+                { name: 'Reggeli', ratio: 0.25, tag: 'Rost és fehérje a nap elején' },
+                { name: 'Ebéd', ratio: 0.35, tag: 'Nagyobb főétkezés' },
+                { name: 'Uzsonna', ratio: 0.15, tag: 'Gyümölcs, magvak, szójajoghurt', sport: 'pre' },
+                { name: 'Vacsora', ratio: 0.25, tag: 'Zöldség + fehérjeforrás', sport: 'post' }
+            ],
+            5: [
+                { name: 'Reggeli', ratio: 0.20, tag: 'Stabil vércukor' },
+                { name: 'Tízórai', ratio: 0.15, tag: 'Gyümölcs / magvak' },
+                { name: 'Ebéd', ratio: 0.30, tag: 'Teljes értékű főétel' },
+                { name: 'Uzsonna', ratio: 0.15, tag: 'Könnyű snack', sport: 'pre' },
+                { name: 'Vacsora', ratio: 0.20, tag: 'Zöldség + fehérjeforrás', sport: 'post' }
+            ],
+            6: [
+                { name: 'Reggeli', ratio: 0.18, tag: 'Napindító' },
+                { name: 'Tízórai', ratio: 0.14, tag: 'Snack' },
+                { name: 'Ebéd', ratio: 0.28, tag: 'Főétel' },
+                { name: 'Uzsonna', ratio: 0.14, tag: 'Snack', sport: 'pre' },
+                { name: 'Vacsora', ratio: 0.16, tag: 'Zöldség + fehérjeforrás', sport: 'post' },
+                { name: 'Esti snack', ratio: 0.10, tag: 'Fehérjedús, pl. szójajoghurt, tofu' }
+            ]
+        };
+
+        // Workout-timed meals shift macros: more carbs / less fat before, protein + carbs after
+        const MEAL_SPORT_SHIFT = {
+            pre: { p: 0.8, c: 1.4, f: 0.4, label: 'edzés előtt', tag: 'Szénhidrátdús, kevés zsír és rost' },
+            post: { p: 1.25, c: 1.2, f: 0.7, label: 'edzés után', tag: 'Fehérje + szénhidrát a regenerációhoz' }
+        };
+
+        function isSportMode() {
+            return document.getElementById('sportMode').checked;
+        }
+
+        function getGoalMode() {
+            return document.querySelector('input[name="goalMode"]:checked').value;
+        }
+
+        function fillSelect(select, options, preferredValue) {
+            select.innerHTML = '';
+            options.forEach(o => {
+                const opt = document.createElement('option');
+                opt.value = o.value;
+                opt.textContent = o.label;
+                select.appendChild(opt);
+            });
+            const match = options.find(o => o.value === preferredValue) || options.find(o => o.default) || options[0];
+            select.value = match.value;
+        }
+
+        // Sport Mode Toggle
+        function onSportModeChange() {
+            const sport = isSportMode();
+            const activitySelect = document.getElementById('activity');
+            const prevActivity = activitySelect.value;
+
+            document.getElementById('sportFields').classList.toggle('hidden', !sport);
+            document.getElementById('sportCard').classList.toggle('hidden', !sport);
+            document.getElementById('activityHint').classList.toggle('hidden', !sport);
+            document.getElementById('creatineSportNote').classList.toggle('hidden', !sport);
+            document.getElementById('creatineBadge').innerText = sport ? 'Ajánlott: 3-5 g / nap' : 'Megfontolandó';
+            document.getElementById('activityLabel').innerText = sport ? 'Hétköznapi Aktivitás (edzés nélkül)' : 'Aktivitási Szint';
+
+            // Activity scales mean different things in the two modes, so keep a value only if it exists in the new list
+            const activityOptions = sport ? SPORT_ACTIVITY : GENERAL_ACTIVITY;
+            fillSelect(activitySelect, activityOptions, prevActivity);
+
+            // Cunningham formula only in sport mode
+            const formulaSelect = document.getElementById('bmrFormula');
+            const cunninghamOption = formulaSelect.querySelector('option[value="cunningham"]');
+            cunninghamOption.hidden = !sport;
+            cunninghamOption.disabled = !sport;
+            if (!sport && formulaSelect.value === 'cunningham') {
+                formulaSelect.value = 'mifflin';
+            }
+
+            buildPresetOptions();
+            onFormulaChange();
+        }
+
+        function buildPresetOptions() {
+            const select = document.getElementById('macroPreset');
+            const prev = select.value || 'auto';
+            const sport = isSportMode();
+            const options = [{ value: 'auto', label: 'Ajánlott (automatikus a célod szerint)' }];
+            Object.entries(PRESETS).forEach(([key, p]) => {
+                if (!p.sport || sport) options.push({ value: key, label: p.label });
+            });
+            options.push({ value: 'custom', label: 'Egyéni Beállítás (Csúszkákkal)' });
+            fillSelect(select, options, prev);
+            if (select.value !== prev) {
+                select.value = 'auto';
+            }
+        }
+
+        // Pace options: % of body weight per week
+        function buildPaceOptions() {
+            const goalMode = getGoalMode();
+            const currentWeight = parseFloat(document.getElementById('currentWeight').value) || 78;
+            const select = document.getElementById('calorieAdjustment');
+            const prev = select.value;
+
+            let paces = [];
+            if (goalMode === 'cut') {
+                paces = [
+                    { pct: -0.25, name: 'Kímélő' },
+                    { pct: -0.5, name: 'Standard (ajánlott)', default: true },
+                    { pct: -0.75, name: 'Gyorsabb' },
+                    { pct: -1.0, name: 'Intenzív (rövid ideig)' }
+                ];
+            } else if (goalMode === 'bulk') {
+                paces = [
+                    { pct: 0.1, name: 'Lassú, minimális zsír (haladóknak)' },
+                    { pct: 0.25, name: 'Standard (ajánlott)', default: true },
+                    { pct: 0.5, name: 'Gyorsabb (kezdőknek)' }
+                ];
+            } else {
+                paces = [{ pct: 0, name: 'Fenntartó kalória', default: true }];
+            }
+
+            const options = paces.map(p => {
+                const kgWeek = currentWeight * Math.abs(p.pct) / 100;
+                const kcalDay = Math.round(paceToKcal(p.pct, currentWeight) / 10) * 10;
+                const sign = p.pct < 0 ? '-' : '+';
+                const label = p.pct === 0
+                    ? `${p.name} (0 kcal deficit/többlet)`
+                    : `${p.name} (${Math.abs(p.pct)}%/hét • ~${kgWeek.toFixed(2)} kg/hét • ${sign}${Math.abs(kcalDay)} kcal/nap)`;
+                return { value: String(p.pct), label, default: p.default };
+            });
+            fillSelect(select, options, prev);
+        }
+
+        // Daily kcal adjustment from weekly body weight change (7700 kcal / kg)
+        function paceToKcal(pct, weight) {
+            return weight * pct / 100 * 7700 / 7;
+        }
+
         // Goal Mode Setup
         function onGoalModeChange() {
-            const goalMode = document.querySelector('input[name="goalMode"]:checked').value;
+            const goalMode = getGoalMode();
             const targetWeightLabel = document.getElementById('targetWeightLabel');
             const targetWeightInput = document.getElementById('targetWeight');
             const currentWeight = parseFloat(document.getElementById('currentWeight').value) || 78;
-            const calAdjSelect = document.getElementById('calorieAdjustment');
             const calAdjTitle = document.getElementById('calAdjTitle');
 
-            calAdjSelect.innerHTML = '';
-
             if (goalMode === 'cut') {
-                calAdjTitle.innerText = 'Fogyási Tempó / Deficit';
+                calAdjTitle.innerText = 'Fogyási Tempó (testsúly % / hét)';
                 targetWeightLabel.innerText = 'Cél Súly (kg)';
                 if (parseFloat(targetWeightInput.value) >= currentWeight) {
                     targetWeightInput.value = (currentWeight - 4).toFixed(1);
                 }
-
-                calAdjSelect.innerHTML = `
-                    <option value="-250">Kímélő / Lassú (-250 kcal &bull; ~0.25 kg/hét)</option>
-                    <option value="-500" selected>Optimális / Standard (-500 kcal &bull; ~0.5 kg/hét)</option>
-                    <option value="-750">Intenzív / Haladó (-750 kcal &bull; ~0.75 kg/hét)</option>
-                `;
             } else if (goalMode === 'maintain') {
                 calAdjTitle.innerText = 'Kalória Egyensúly';
                 targetWeightLabel.innerText = 'Súlytartási Súly (kg)';
                 targetWeightInput.value = currentWeight.toFixed(1);
-
-                calAdjSelect.innerHTML = `
-                    <option value="0" selected>Fenntartó Kalória (0 kcal deficit/többlet)</option>
-                `;
             } else if (goalMode === 'bulk') {
-                calAdjTitle.innerText = 'Izomtömeg Növelési Többlet';
+                calAdjTitle.innerText = 'Súlygyarapodási Tempó (testsúly % / hét)';
                 targetWeightLabel.innerText = 'Cél Súly (kg)';
                 if (parseFloat(targetWeightInput.value) <= currentWeight) {
                     targetWeightInput.value = (currentWeight + 4).toFixed(1);
                 }
-
-                calAdjSelect.innerHTML = `
-                    <option value="200" selected>Tiszta Izomépítés / Kímélő (+200 kcal &bull; ~0.2 kg/hét)</option>
-                    <option value="350">Standard Tömegnövelés (+350 kcal &bull; ~0.35 kg/hét)</option>
-                    <option value="500">Gyors Tömegnövelés (+500 kcal &bull; ~0.5 kg/hét)</option>
-                `;
             }
+
+            buildPaceOptions();
         }
 
         // BMR Formula change handler
@@ -688,15 +989,33 @@
             const formulaHint = document.getElementById('formulaHint');
             const bmrFormulaTag = document.getElementById('bmrFormulaTag');
 
+            // Body fat is needed for LBM formulas and for energy availability in sport mode
+            bodyFatContainer.classList.toggle('hidden', formula === 'mifflin' && !isSportMode());
+
             if (formula === 'katch') {
-                bodyFatContainer.classList.remove('hidden');
                 formulaHint.innerText = 'Katch-McArdle (LBM)';
                 bmrFormulaTag.innerText = 'Katch-McArdle';
+            } else if (formula === 'cunningham') {
+                formulaHint.innerText = 'Cunningham (LBM)';
+                bmrFormulaTag.innerText = 'Cunningham';
             } else {
-                bodyFatContainer.classList.add('hidden');
                 formulaHint.innerText = 'Mifflin-St Jeor';
                 bmrFormulaTag.innerText = 'Mifflin';
             }
+        }
+
+        function renderBodyFatPresets() {
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const container = document.getElementById('bodyFatPresets');
+            container.innerHTML = '<span class="text-slate-400">Irányadók:</span>';
+            BODY_FAT_PRESETS[gender].forEach(([val, label]) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 hover:bg-brand-100 dark:hover:bg-brand-900/40 text-slate-700 dark:text-slate-300';
+                btn.innerText = `${val}% (${label})`;
+                btn.onclick = () => setBodyFat(val);
+                container.appendChild(btn);
+            });
         }
 
         function setBodyFat(val) {
@@ -704,21 +1023,30 @@
             calculate();
         }
 
+        // Protein recommendation (g/kg reference weight) by goal, age and sport mode.
+        // General values already include ~10% extra for lower plant protein digestibility.
+        function proteinRecommendation(goalMode, age, sport) {
+            if (sport) {
+                if (goalMode === 'cut') return { min: 1.8, max: 2.4, auto: 2.1 };
+                if (goalMode === 'bulk') return { min: 1.6, max: 2.2, auto: 1.9 };
+                return { min: 1.6, max: 2.0, auto: 1.8 };
+            }
+            if (age >= 65) {
+                if (goalMode === 'cut') return { min: 1.2, max: 1.5, auto: 1.4 };
+                if (goalMode === 'bulk') return { min: 1.2, max: 1.6, auto: 1.4 };
+                return { min: 1.0, max: 1.2, auto: 1.2 };
+            }
+            if (goalMode === 'cut') return { min: 1.2, max: 1.6, auto: 1.4 };
+            if (goalMode === 'bulk') return { min: 1.2, max: 1.6, auto: 1.4 };
+            return { min: 0.9, max: 1.2, auto: 1.0 };
+        }
+
         // Macro Preset Handler
         function onMacroPresetChange() {
-            const preset = document.getElementById('macroPreset').value;
-            const proteinSlider = document.getElementById('proteinRatio');
-            const fatSlider = document.getElementById('fatRatio');
-
-            if (preset === 'high_protein') {
-                proteinSlider.value = 2.0;
-                fatSlider.value = 25;
-            } else if (preset === 'balanced') {
-                proteinSlider.value = 1.6;
-                fatSlider.value = 28;
-            } else if (preset === 'wfpb_hclf') {
-                proteinSlider.value = 1.4;
-                fatSlider.value = 18;
+            const preset = PRESETS[document.getElementById('macroPreset').value];
+            if (preset) {
+                document.getElementById('proteinRatio').value = preset.p;
+                document.getElementById('fatRatio').value = preset.f;
             }
         }
 
@@ -726,24 +1054,46 @@
             document.getElementById('macroPreset').value = 'custom';
         }
 
+        function fmt(num, digits = 1) {
+            return num.toFixed(digits).replace('.', ',');
+        }
+
         // Main Calculation Function
         function calculate() {
+            const sport = isSportMode();
             const gender = document.querySelector('input[name="gender"]:checked').value;
-            const goalMode = document.querySelector('input[name="goalMode"]:checked').value;
+            const goalMode = getGoalMode();
             const currentWeight = parseFloat(document.getElementById('currentWeight').value) || 78;
-            const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 74;
+            const targetWeight = parseFloat(document.getElementById('targetWeight').value) || currentWeight;
             const height = parseFloat(document.getElementById('height').value) || 175;
             const age = parseFloat(document.getElementById('age').value) || 30;
             const activityMultiplier = parseFloat(document.getElementById('activity').value) || 1.375;
-            const calorieAdjustment = parseFloat(document.getElementById('calorieAdjustment').value) || 0;
+            const pacePct = parseFloat(document.getElementById('calorieAdjustment').value) || 0;
             const formula = document.getElementById('bmrFormula').value;
-            const bodyFatPct = parseFloat(document.getElementById('bodyFat').value) || 16;
-            const proteinRatio = parseFloat(document.getElementById('proteinRatio').value) || 1.8;
-            const fatRatioPct = parseFloat(document.getElementById('fatRatio').value) || 25;
+            const bodyFatPct = parseFloat(document.getElementById('bodyFat').value) || 18;
+            const trainKcal = sport ? (parseFloat(document.getElementById('trainKcal').value) || 0) : 0;
+            const trainDays = sport ? Math.min(7, Math.max(0, parseInt(document.getElementById('trainDays').value) || 0)) : 0;
+            const trainType = document.getElementById('trainType').value;
+            const presetKey = document.getElementById('macroPreset').value;
+
+            const warnings = [];
+            const heightM = height / 100;
+            const bmi = currentWeight / (heightM * heightM);
+            const targetBmi = targetWeight / (heightM * heightM);
+
+            // Recommended protein; the automatic preset follows it
+            const proteinRec = proteinRecommendation(goalMode, age, sport);
+            if (presetKey === 'auto') {
+                document.getElementById('proteinRatio').value = proteinRec.auto;
+                document.getElementById('fatRatio').value = sport ? 25 : 30;
+            }
+            const proteinRatio = parseFloat(document.getElementById('proteinRatio').value) || proteinRec.auto;
+            const fatRatioPct = parseFloat(document.getElementById('fatRatio').value) || 30;
 
             // Update ratio labels
-            document.getElementById('proteinRatioVal').innerText = `${proteinRatio.toFixed(1)} g/kg`;
+            document.getElementById('proteinRatioVal').innerText = `${fmt(proteinRatio)} g/kg`;
             document.getElementById('fatRatioVal').innerText = `${fatRatioPct} %`;
+            document.getElementById('proteinHint').innerText = `Ajánlott a céljaidhoz: ${fmt(proteinRec.min)}–${fmt(proteinRec.max)} g/kg${sport ? ' (sportoló)' : (age >= 65 ? ' (65 év felett)' : '')}`;
 
             // 1. Calculate BMR
             let bmr = 0;
@@ -753,6 +1103,9 @@
             if (formula === 'katch') {
                 // Katch-McArdle: 370 + (21.6 * LBM)
                 bmr = 370 + (21.6 * lbm);
+            } else if (formula === 'cunningham') {
+                // Cunningham: 500 + (22 * LBM)
+                bmr = 500 + (22 * lbm);
             } else {
                 // Mifflin-St Jeor
                 bmr = (10 * currentWeight) + (6.25 * height) - (5 * age);
@@ -762,32 +1115,37 @@
                     bmr -= 161;
                 }
             }
+            bmr = Math.round(bmr);
 
-            // 2. TDEE
-            const tdee = Math.round(bmr * activityMultiplier);
+            // 2. TDEE (sport mode: everyday activity + separately entered training energy)
+            const avgTrainKcal = trainKcal * trainDays / 7;
+            const tdee = Math.round(sport ? bmr * activityMultiplier + avgTrainKcal : bmr * activityMultiplier);
 
-            // 3. Target Calories
-            let targetCalories = Math.round(tdee + calorieAdjustment);
-            // Minimum safety floor: 1200 kcal for female, 1400 kcal for male in heavy deficit
-            const minSafeCal = (gender === 'male') ? 1400 : 1200;
-            if (targetCalories < minSafeCal) {
-                targetCalories = minSafeCal;
+            // 3. Target Calories, never below BMR
+            const plannedAdjustment = Math.round(paceToKcal(pacePct, currentWeight));
+            let targetCalories = Math.round(tdee + plannedAdjustment);
+            if (targetCalories < bmr) {
+                targetCalories = bmr;
+                warnings.push({ level: 'warn', text: `A választott tempóval a kalória az alapanyagcsere (${bmr} kcal) alá esne, ezért ${bmr} kcal-ra emeltük. A tényleges deficit így ${tdee - bmr} kcal/nap. Válassz lassabb tempót.` });
             }
+            const actualAdjustment = targetCalories - tdee;
 
-            // 4. Timeline Projection
+            // 4. Timeline Projection (range: metabolic adaptation slows progress over time)
             const weightDiff = Math.abs(currentWeight - targetWeight);
             const timelineVal = document.getElementById('timelineVal');
             const weightDiffText = document.getElementById('weightDiffText');
             const deficitText = document.getElementById('deficitText');
 
+            const weeksRange = (dailyKcal) => {
+                const weeks = Math.max(1, Math.round(weightDiff * 7700 / (dailyKcal * 7)));
+                return `~${weeks}–${Math.round(weeks * 1.25)} hét`;
+            };
+
             if (goalMode === 'cut') {
-                deficitText.innerText = `${calorieAdjustment} kcal napi deficit`;
-                if (calorieAdjustment < 0 && currentWeight > targetWeight) {
-                    const dailyDeficit = Math.abs(calorieAdjustment);
-                    const totalDeficitKcal = weightDiff * 7700;
-                    const weeks = Math.max(1, Math.round(totalDeficitKcal / (dailyDeficit * 7)));
-                    timelineVal.innerText = `~${weeks} hét`;
-                    weightDiffText.innerText = `${weightDiff.toFixed(1)} kg zsírcsökkenés`;
+                deficitText.innerText = `${actualAdjustment} kcal napi deficit`;
+                if (actualAdjustment < 0 && currentWeight > targetWeight) {
+                    timelineVal.innerText = weeksRange(Math.abs(actualAdjustment));
+                    weightDiffText.innerText = `${weightDiff.toFixed(1)} kg testsúlycsökkenés (a vége felé lassul)`;
                 } else {
                     timelineVal.innerText = 'Cél elért!';
                     weightDiffText.innerText = 'Célsúly egyezik vagy elért';
@@ -797,13 +1155,10 @@
                 timelineVal.innerText = 'Folyamatos';
                 weightDiffText.innerText = `Aktuális súly (${currentWeight} kg) tartása`;
             } else if (goalMode === 'bulk') {
-                deficitText.innerText = `+${calorieAdjustment} kcal napi többlet`;
-                if (calorieAdjustment > 0 && targetWeight > currentWeight) {
-                    const dailySurplus = Math.abs(calorieAdjustment);
-                    const totalSurplusKcal = weightDiff * 7700;
-                    const weeks = Math.max(1, Math.round(totalSurplusKcal / (dailySurplus * 7)));
-                    timelineVal.innerText = `~${weeks} hét`;
-                    weightDiffText.innerText = `+${weightDiff.toFixed(1)} kg izomtömeg építés`;
+                deficitText.innerText = `+${actualAdjustment} kcal napi többlet`;
+                if (actualAdjustment > 0 && targetWeight > currentWeight) {
+                    timelineVal.innerText = weeksRange(actualAdjustment);
+                    weightDiffText.innerText = `+${weightDiff.toFixed(1)} kg testsúly (nem mind izom)`;
                 } else {
                     timelineVal.innerText = 'Cél elért!';
                     weightDiffText.innerText = 'Célsúly egyezik';
@@ -811,52 +1166,130 @@
             }
 
             // 5. Macro Breakdown Calculation
-            // Protein: based on current weight
-            const proteinGrams = Math.round(currentWeight * proteinRatio);
+            // Protein reference weight: with BMI >= 30 total body weight overestimates the need
+            let refWeight = currentWeight;
+            if (bmi >= 30) {
+                const healthyWeight = 25 * heightM * heightM;
+                const goalWeight = goalMode === 'cut' ? Math.min(targetWeight, currentWeight) : healthyWeight;
+                refWeight = Math.min(currentWeight, Math.max(healthyWeight, goalWeight));
+                warnings.push({ level: 'info', text: `30 feletti BMI-nél a fehérjét ${fmt(refWeight)} kg referencia-testsúlyra számoljuk (a célsúly, vagy a 25-ös BMI-hez tartozó súly közül a nagyobb), mert a teljes testsúly túlbecsülné az igényt.` });
+            }
+            const proteinGrams = Math.round(refWeight * proteinRatio);
             const proteinKcal = proteinGrams * 4;
 
-            // Fat: user configured % of target calories
-            const fatKcal = Math.round(targetCalories * (fatRatioPct / 100));
-            const fatGrams = Math.round(fatKcal / 9);
+            // Fat: % of target calories, but never below 0.6 g/kg (hormonal health)
+            const minFatGrams = Math.round(refWeight * 0.6);
+            let fatGrams = Math.round(targetCalories * (fatRatioPct / 100) / 9);
+            if (fatGrams < minFatGrams) {
+                fatGrams = minFatGrams;
+                warnings.push({ level: 'info', text: `A zsírt a minimális ${minFatGrams} g-ra (0,6 g/kg) emeltük. Ennél kevesebb zsír hosszú távon a hormonháztartást és a zsíroldékony vitaminok felszívódását rontja.` });
+            } else if (fatRatioPct < 20) {
+                warnings.push({ level: 'info', text: 'A zsír 20% alatt van. Ez az általános ajánlás (20–35%) alsó határa alatt van, figyelj az omega-3 és az olajos magvak bevitelére.' });
+            }
+            const fatKcal = fatGrams * 9;
 
             // Carbs: Remainder calories
             let carbsKcal = targetCalories - proteinKcal - fatKcal;
             if (carbsKcal < 0) {
+                warnings.push({ level: 'danger', text: `A fehérje és a zsír együtt több, mint a napi célkalória, így szénhidrát nem marad, és a makrók összege (${proteinKcal + fatKcal} kcal) meghaladja a célt. Csökkentsd a fehérjét vagy válassz lassabb tempót.` });
                 carbsKcal = 0;
             }
             const carbsGrams = Math.round(carbsKcal / 4);
+            const totalMacroKcal = proteinKcal + carbsKcal + fatKcal;
 
-            // Percentages
-            const proteinPct = Math.round((proteinKcal / targetCalories) * 100);
-            const carbsPct = Math.round((carbsKcal / targetCalories) * 100);
-            const fatsPct = Math.round((fatKcal / targetCalories) * 100);
+            // Percentages of the actual macro total
+            const proteinPct = Math.round((proteinKcal / totalMacroKcal) * 100);
+            const carbsPct = Math.round((carbsKcal / totalMacroKcal) * 100);
+            const fatsPct = Math.round((fatKcal / totalMacroKcal) * 100);
+
+            if (!sport && carbsKcal > 0 && carbsPct < 45) {
+                warnings.push({ level: 'info', text: `A szénhidrát a kalória ${carbsPct}%-a, az általános ajánlás 45–60%. Teljes értékű gabonák, hüvelyesek, gyümölcsök és zöldségek jó források.` });
+            }
 
             // 6. Secondary Metrics: Fiber & Hydration
-            // Vegan fiber guideline: 14g per 1000 kcal, min 38g for males, 30g for females
-            const minFiber = (gender === 'male') ? 38 : 30;
-            const targetFiber = Math.max(minFiber, Math.round((targetCalories / 1000) * 14));
+            // Fiber: 14 g / 1000 kcal, at least 25 g (EFSA), capped at 50 g for digestive comfort
+            const fiberByKcal = Math.round((targetCalories / 1000) * 14);
+            const targetFiber = Math.min(50, Math.max(25, fiberByKcal));
             document.getElementById('fiberVal').innerText = `~${targetFiber} g / nap`;
+            if (fiberByKcal > 50) {
+                warnings.push({ level: 'info', text: 'Nagy kalóriabevitelnél napi 50 g felett a rost puffadást okozhat, és nehezebb tőle megenni a kalóriát. Itt a finomabb gabonák és a pürésített hüvelyesek is rendben vannak.' });
+            }
 
-            // Hydration: 35-40 ml / kg bodyweight + activity addition
-            const baseWater = (currentWeight * 0.035).toFixed(1);
-            const highWater = (currentWeight * 0.040 + (activityMultiplier > 1.4 ? 0.5 : 0)).toFixed(1);
+            // Hydration: 30-35 ml / kg from drinks; training needs are shown on the sport card
+            const baseWater = (currentWeight * 0.030).toFixed(1);
+            const highWater = (currentWeight * 0.035).toFixed(1);
             document.getElementById('waterVal').innerText = `${baseWater} - ${highWater} L / nap`;
+            document.getElementById('waterHint').innerText = sport ? '30-35 ml/kg + edzés' : '30-35 ml / kg';
 
-            // 7. Update Displays
-            document.getElementById('bmrVal').innerText = Math.round(bmr);
+            // 7. Safety & sanity warnings
+            if (age < 18) {
+                warnings.unshift({ level: 'danger', text: '18 év alatt a növekedés miatt ne kalóriadeficittel és makrócélokkal étkezz. Kérj tanácsot dietetikustól vagy orvostól.' });
+            }
+            if (goalMode === 'cut' && bmi < 18.5) {
+                warnings.unshift({ level: 'danger', text: `A jelenlegi BMI-d ${fmt(bmi)}, ami alacsony testsúlyt jelez. Fogyás nem javasolt, kérj szakmai segítséget.` });
+            } else if (goalMode === 'cut' && targetBmi < 18.5) {
+                warnings.unshift({ level: 'danger', text: `A célsúlyhoz tartozó BMI ${fmt(targetBmi)}, ami 18,5 alatt van (alacsony testsúly). Válassz magasabb célsúlyt.` });
+            }
+            if (goalMode === 'cut' && age >= 65 && pacePct < -0.5) {
+                warnings.push({ level: 'warn', text: '65 év felett a gyors fogyás izomvesztéssel jár. Legfeljebb 0,5%/hét tempó és rendszeres erősítő mozgás ajánlott.' });
+            }
+            if (goalMode === 'bulk' && !sport) {
+                warnings.push({ level: 'info', text: 'Izomépítéshez rendszeres erősítő edzés kell, nélküle a többletkalória főleg zsírként raktározódik.' });
+            }
+
+            // 8. Sport mode: energy availability and training / rest day periodization
+            if (sport) {
+                const ea = (targetCalories - avgTrainKcal) / lbm;
+                const eaEl = document.getElementById('eaVal');
+                const eaText = document.getElementById('eaText');
+                eaEl.innerText = `${Math.round(ea)} kcal/kg`;
+                eaEl.className = 'text-lg font-bold ' + (ea < 30 ? 'text-rose-600 dark:text-rose-400' : ea < 45 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400');
+                if (ea < 30) {
+                    eaText.innerText = 'Alacsony: RED-S kockázat';
+                    warnings.unshift({ level: 'danger', text: `Az energiaelérhetőség ${Math.round(ea)} kcal/kg sovány tömeg, ez 30 alatt van. Tartósan hormonális zavart, menstruációs zavart, csontritkulást, sérüléseket és teljesítménycsökkenést okozhat (RED-S). Csökkentsd a deficitet vagy az edzésmennyiséget.` });
+                } else if (ea < 45) {
+                    eaText.innerText = goalMode === 'cut' ? 'Mérsékelt: fogyáshoz rövid ideig elfogadható' : 'Mérsékelt: 45 felett optimális';
+                } else {
+                    eaText.innerText = 'Optimális (45+)';
+                }
+
+                const trainDayExtra = trainDays > 0 ? trainKcal - avgTrainKcal : 0;
+                const trainDayCal = Math.round(targetCalories + trainDayExtra);
+                const restDayCal = Math.round(targetCalories - avgTrainKcal);
+                const trainDayCarbs = Math.round(carbsGrams + trainDayExtra / 4);
+                const restDayCarbs = Math.max(0, Math.round(carbsGrams - avgTrainKcal / 4));
+
+                document.getElementById('trainDayVal').innerText = trainDays > 0 ? `${trainDayCal} kcal` : '–';
+                document.getElementById('trainDayCarbs').innerText = trainDays > 0 ? `${trainDayCarbs} g szénhidrát (${fmt(trainDayCarbs / currentWeight)} g/kg)` : 'Nincs edzésnap megadva';
+                document.getElementById('restDayVal').innerText = trainDays < 7 ? `${restDayCal} kcal` : '–';
+                document.getElementById('restDayCarbs').innerText = trainDays < 7 ? `${restDayCarbs} g szénhidrát (${fmt(restDayCarbs / currentWeight)} g/kg)` : 'Minden nap edzésnap';
+
+                const range = CARB_RANGES[trainType];
+                const carbPerKg = (trainDays > 0 ? trainDayCarbs : carbsGrams) / currentWeight;
+                document.getElementById('carbRangeText').innerText = `Ajánlott az edzés jellege alapján: ${range.min}–${range.max} g/kg (${Math.round(range.min * currentWeight)}–${Math.round(range.max * currentWeight)} g). Jelenleg: ${fmt(carbPerKg)} g/kg.`;
+                if (carbPerKg < range.min) {
+                    warnings.push({ level: 'warn', text: `Edzésnapon a szénhidrát ${fmt(carbPerKg)} g/kg, ez az ajánlott ${range.min}–${range.max} g/kg alatt van, ami ronthatja a teljesítményt és a regenerációt. Csökkentsd a zsírt vagy a fehérjét, vagy mérsékeld a deficitet.` });
+                }
+                if (restDayCal < bmr && trainDays > 0 && trainDays < 7) {
+                    warnings.push({ level: 'info', text: `Pihenőnapon a kalória (${restDayCal} kcal) az alapanyagcsere alá esik. Érdemes kisebb különbséget tartani az edzés- és pihenőnap között.` });
+                }
+            }
+
+            // 9. Update Displays
+            document.getElementById('bmrVal').innerText = bmr;
             document.getElementById('tdeeVal').innerText = `${tdee} kcal`;
             document.getElementById('targetCalVal').innerText = `${targetCalories} kcal`;
 
             document.getElementById('proteinGram').innerText = `${proteinGrams} g`;
-            document.getElementById('proteinKcal').innerText = `${proteinKcal} kcal (${proteinRatio.toFixed(1)} g/kg)`;
+            document.getElementById('proteinKcal').innerText = `${proteinKcal} kcal (${fmt(proteinRatio)} g/kg${refWeight !== currentWeight ? ` × ${refWeight.toFixed(0)} kg` : ''})`;
             document.getElementById('proteinPct').innerText = `${proteinPct}%`;
 
             document.getElementById('carbsGram').innerText = `${carbsGrams} g`;
-            document.getElementById('carbsKcal').innerText = `${carbsKcal} kcal`;
+            document.getElementById('carbsKcal').innerText = `${carbsKcal} kcal (${fmt(carbsGrams / currentWeight)} g/kg)`;
             document.getElementById('carbsPct').innerText = `${carbsPct}%`;
 
             document.getElementById('fatsGram').innerText = `${fatGrams} g`;
-            document.getElementById('fatsKcal').innerText = `${fatKcal} kcal`;
+            document.getElementById('fatsKcal').innerText = `${fatKcal} kcal (${fmt(fatGrams / refWeight)} g/kg)`;
             document.getElementById('fatsPct').innerText = `${fatsPct}%`;
 
             document.getElementById('macroSummaryBadge').innerText = `P: ${proteinGrams}g | C: ${carbsGrams}g | F: ${fatGrams}g`;
@@ -866,14 +1299,41 @@
             document.getElementById('mProtein').innerText = `${proteinGrams} g`;
             document.getElementById('mFiber').innerText = `${targetFiber} g`;
 
-            // 8. Update Chart
+            renderWarnings(warnings);
+
+            // 10. Update Chart
             updateChart(proteinKcal, carbsKcal, fatKcal);
 
-            // 9. Update Meal Splitter
-            updateMealSplit(targetCalories, proteinGrams, carbsGrams, fatGrams);
+            // 11. Update Meal Splitter
+            lastMacros = { p: proteinGrams, c: carbsGrams, f: fatGrams, refWeight, sport };
+            updateMealSplit();
 
-            // 10. Auto-save state
+            // 12. Auto-save state
             saveToStorage();
+        }
+
+        function renderWarnings(warnings) {
+            const box = document.getElementById('warningsBox');
+            const list = document.getElementById('warningsList');
+            box.classList.toggle('hidden', warnings.length === 0);
+            const dot = {
+                danger: 'bg-rose-500',
+                warn: 'bg-amber-500',
+                info: 'bg-blue-500'
+            };
+            const text = {
+                danger: 'text-rose-700 dark:text-rose-300 font-medium',
+                warn: 'text-amber-700 dark:text-amber-300',
+                info: 'text-slate-600 dark:text-slate-300'
+            };
+            list.innerHTML = '';
+            warnings.forEach(w => {
+                const li = document.createElement('li');
+                li.className = 'flex gap-2';
+                li.innerHTML = `<span class="w-2 h-2 rounded-full mt-1 shrink-0 ${dot[w.level]}"></span><span class="${text[w.level]}"></span>`;
+                li.lastElementChild.textContent = w.text;
+                list.appendChild(li);
+            });
         }
 
         // Chart Update Logic
@@ -881,7 +1341,7 @@
             const canvas = document.getElementById('macroChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            
+
             if (macroChartInstance) {
                 macroChartInstance.destroy();
             }
@@ -917,67 +1377,50 @@
             });
         }
 
-        // Meal Splitter Logic with workout-timing tags
-        function updateMealSplit(cal, p, c, f) {
-            if (!cal) {
-                cal = parseInt(document.getElementById('targetCalVal').innerText) || 1650;
-                p = parseInt(document.getElementById('proteinGram').innerText) || 140;
-                c = parseInt(document.getElementById('carbsGram').innerText) || 160;
-                f = parseInt(document.getElementById('fatsGram').innerText) || 50;
-            }
+        // Meal Splitter: proportional in general mode, workout-timed macro shift in sport mode
+        function updateMealSplit() {
+            if (!lastMacros) return;
+            const { p, c, f, refWeight, sport } = lastMacros;
 
             const count = parseInt(document.getElementById('mealCount').value);
             const container = document.getElementById('mealSplitList');
             container.innerHTML = '';
 
-            let ratios = [];
-            if (count === 3) {
-                ratios = [
-                    { name: '1. Reggeli', ratio: 0.30, tag: 'Energiafeltöltés' },
-                    { name: '2. Ebéd (Edzés előtt)', ratio: 0.40, tag: 'Főétkezés / Szénhidrát' },
-                    { name: '3. Vacsora (Edzés után)', ratio: 0.30, tag: 'Regeneráció / Fehérjedús' }
-                ];
-            } else if (count === 4) {
-                ratios = [
-                    { name: '1. Reggeli', ratio: 0.25, tag: 'Napindító rost & fehérje' },
-                    { name: '2. Ebéd', ratio: 0.35, tag: 'Nagyobb főétkezés' },
-                    { name: '3. Uzsonna (Edzés előtt)', ratio: 0.15, tag: 'Könnyen emészthető szénh.' },
-                    { name: '4. Vacsora (Edzés után)', ratio: 0.25, tag: 'Izomregeneráló fehérje' }
-                ];
-            } else if (count === 5) {
-                ratios = [
-                    { name: '1. Reggeli', ratio: 0.20, tag: 'Stabil vércukor' },
-                    { name: '2. Tízórai', ratio: 0.15, tag: 'Gyümölcs / Magvak' },
-                    { name: '3. Ebéd', ratio: 0.30, tag: 'Teljes értékű főétel' },
-                    { name: '4. Uzsonna (Pre-Workout)', ratio: 0.15, tag: 'Edzés előtti boost' },
-                    { name: '5. Vacsora (Post-Workout)', ratio: 0.20, tag: 'Éjszakai anabolizmus' }
-                ];
-            } else {
-                ratios = [
-                    { name: '1. Reggeli', ratio: 0.18, tag: 'Napindító' },
-                    { name: '2. Tízórai', ratio: 0.14, tag: 'Snack' },
-                    { name: '3. Ebéd', ratio: 0.28, tag: 'Főétel' },
-                    { name: '4. Uzsonna', ratio: 0.14, tag: 'Pre-workout' },
-                    { name: '5. Vacsora', ratio: 0.16, tag: 'Post-workout' },
-                    { name: '6. Esti Fehérje Snack', ratio: 0.10, tag: 'Kazein-jellegű / Tofu' }
-                ];
-            }
+            const meals = MEAL_PLANS[count].map(m => {
+                const shift = sport && m.sport ? MEAL_SPORT_SHIFT[m.sport] : { p: 1, c: 1, f: 1 };
+                return { ...m, shift };
+            });
 
-            ratios.forEach(m => {
-                const mealCal = Math.round(cal * m.ratio);
-                const mealP = Math.round(p * m.ratio);
-                const mealC = Math.round(c * m.ratio);
-                const mealF = Math.round(f * m.ratio);
+            // Normalize each macro separately so daily totals stay unchanged
+            const sum = key => meals.reduce((acc, m) => acc + m.ratio * m.shift[key], 0);
+            const sumP = sum('p'), sumC = sum('c'), sumF = sum('f');
+
+            document.getElementById('mealIntro').innerText = sport
+                ? 'Napi makrók elosztása, az edzés körüli étkezésekhez igazítva (átlagos nap):'
+                : 'Napi makrók elosztása az étkezésekre:';
+            document.getElementById('mealProteinTip').innerText = sport
+                ? `Tipp: étkezésenként kb. 0,4 g/kg, azaz ~${Math.round(refWeight * 0.4)} g fehérje. A növényi fehérjében kevesebb a leucin, ezért a nagyobb adag segít elérni a ~2,5–3 g leucint.`
+                : 'Tipp: főétkezésenként 20–30 g fehérje (pl. tofu, tempeh, hüvelyesek) segít a jóllakottságban és az izomtömeg megőrzésében.';
+
+            meals.forEach((m, i) => {
+                const mealP = Math.round(p * m.ratio * m.shift.p / sumP);
+                const mealC = Math.round(c * m.ratio * m.shift.c / sumC);
+                const mealF = Math.round(f * m.ratio * m.shift.f / sumF);
+                const mealCal = mealP * 4 + mealC * 4 + mealF * 9;
+
+                const sportInfo = sport && m.sport ? MEAL_SPORT_SHIFT[m.sport] : null;
+                const name = `${i + 1}. ${m.name}${sportInfo ? ` (${sportInfo.label})` : ''}`;
+                const tag = sportInfo ? sportInfo.tag : (sport && m.name === 'Esti snack' ? 'Lefekvés előtti fehérje (szója)' : m.tag);
 
                 const card = document.createElement('div');
                 card.className = "p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/60 bg-slate-50/50 dark:bg-slate-900/30";
                 card.innerHTML = `
                     <div class="flex justify-between items-center mb-1.5">
                         <div>
-                            <span class="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 block">${m.name}</span>
-                            <span class="text-[10px] text-slate-400 block">${m.tag}</span>
+                            <span class="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 block">${name}</span>
+                            <span class="text-[10px] text-slate-400 block">${tag}</span>
                         </div>
-                        <span class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/30 px-2 py-0.5 rounded">${mealCal} kcal</span>
+                        <span class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/30 px-2 py-0.5 rounded shrink-0">${mealCal} kcal</span>
                     </div>
                     <div class="grid grid-cols-3 gap-1.5 text-center text-xs pt-1">
                         <div class="bg-white dark:bg-slate-800 p-1.5 rounded-lg border border-slate-100 dark:border-slate-700/50">
@@ -1007,14 +1450,14 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = `p-2 rounded-xl border text-left transition flex items-center justify-between text-xs font-medium ${
-                    source.id === selectedSourceId 
-                    ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 ring-1 ring-brand-500' 
+                    source.id === selectedSourceId
+                    ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 ring-1 ring-brand-500'
                     : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300'
                 }`;
                 btn.onclick = () => {
                     selectedSourceId = source.id;
                     initProteinSwapper();
-                    renderSwaps();
+                    saveToStorage();
                 };
                 btn.innerHTML = `
                     <span class="truncate pr-1">${source.name}</span>
@@ -1029,12 +1472,13 @@
         function renderSwaps() {
             const baseGrams = parseFloat(document.getElementById('swapBaseGrams').value) || 100;
             const base = veganProteinSources.find(s => s.id === selectedSourceId) || veganProteinSources[0];
-            
+
             // Total protein in the selected base portion
             const totalBaseProtein = ((base.protein / 100) * baseGrams);
             const totalBaseKcal = Math.round((base.kcal / 100) * baseGrams);
 
             document.getElementById('selectedSourceLabel').innerText = `${baseGrams}g ${base.name}`;
+            document.getElementById('selectedSourceNote').innerText = base.note;
             document.getElementById('selectedSourceProtein').innerText = `~${totalBaseProtein.toFixed(1)}g Fehérje (${totalBaseKcal} kcal)`;
 
             const swapList = document.getElementById('swapList');
@@ -1048,10 +1492,13 @@
                 const targetKcal = Math.round((targetGrams / 100) * target.kcal);
 
                 const item = document.createElement('div');
-                item.className = "p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 flex justify-between items-center";
+                item.className = "p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 flex justify-between items-center gap-2";
                 item.innerHTML = `
-                    <span class="font-medium text-slate-800 dark:text-slate-200">${target.name}</span>
-                    <div class="text-right">
+                    <div>
+                        <span class="font-medium text-slate-800 dark:text-slate-200 block">${target.name}</span>
+                        <span class="text-[10px] text-slate-400">${target.note}</span>
+                    </div>
+                    <div class="text-right shrink-0">
                         <span class="font-bold text-brand-600 dark:text-brand-400">${targetGrams} g</span>
                         <span class="text-[10px] text-slate-400 block">(${targetKcal} kcal)</span>
                     </div>
@@ -1095,6 +1542,7 @@
         function saveToStorage() {
             try {
                 const data = {
+                    sportMode: isSportMode(),
                     goalMode: document.querySelector('input[name="goalMode"]:checked')?.value || 'cut',
                     gender: document.querySelector('input[name="gender"]:checked')?.value || 'male',
                     currentWeight: document.getElementById('currentWeight').value,
@@ -1104,6 +1552,9 @@
                     bmrFormula: document.getElementById('bmrFormula').value,
                     bodyFat: document.getElementById('bodyFat').value,
                     activity: document.getElementById('activity').value,
+                    trainKcal: document.getElementById('trainKcal').value,
+                    trainDays: document.getElementById('trainDays').value,
+                    trainType: document.getElementById('trainType').value,
                     calorieAdjustment: document.getElementById('calorieAdjustment').value,
                     macroPreset: document.getElementById('macroPreset').value,
                     proteinRatio: document.getElementById('proteinRatio').value,
@@ -1129,6 +1580,7 @@
         }
 
         function loadFromStorage() {
+            let data = {};
             try {
                 // Theme restore
                 const savedTheme = localStorage.getItem('vegan_calc_theme');
@@ -1139,39 +1591,54 @@
                 }
 
                 const raw = localStorage.getItem(STORAGE_KEY);
-                if (!raw) return;
-                const data = JSON.parse(raw);
-
-                if (data.goalMode) {
-                    const el = document.querySelector(`input[name="goalMode"][value="${data.goalMode}"]`);
-                    if (el) el.checked = true;
-                }
-                if (data.gender) {
-                    const el = document.querySelector(`input[name="gender"][value="${data.gender}"]`);
-                    if (el) el.checked = true;
-                }
-                if (data.currentWeight) document.getElementById('currentWeight').value = data.currentWeight;
-                if (data.targetWeight) document.getElementById('targetWeight').value = data.targetWeight;
-                if (data.height) document.getElementById('height').value = data.height;
-                if (data.age) document.getElementById('age').value = data.age;
-                if (data.activity) document.getElementById('activity').value = data.activity;
-                if (data.bmrFormula) document.getElementById('bmrFormula').value = data.bmrFormula;
-                if (data.bodyFat) document.getElementById('bodyFat').value = data.bodyFat;
-                if (data.macroPreset) document.getElementById('macroPreset').value = data.macroPreset;
-                if (data.proteinRatio) document.getElementById('proteinRatio').value = data.proteinRatio;
-                if (data.fatRatio) document.getElementById('fatRatio').value = data.fatRatio;
-                if (data.mealCount) document.getElementById('mealCount').value = data.mealCount;
-                if (data.swapBaseGrams) document.getElementById('swapBaseGrams').value = data.swapBaseGrams;
-                if (data.selectedSourceId) selectedSourceId = data.selectedSourceId;
-
-                onGoalModeChange();
-                if (data.calorieAdjustment) {
-                    document.getElementById('calorieAdjustment').value = data.calorieAdjustment;
-                }
-                onFormulaChange();
+                if (raw) data = JSON.parse(raw) || {};
             } catch (e) {
                 console.error("Storage load error", e);
             }
+
+            const setVal = (id, val) => { if (val !== undefined && val !== null && val !== '') document.getElementById(id).value = val; };
+
+            document.getElementById('sportMode').checked = !!data.sportMode;
+            if (data.goalMode) {
+                const el = document.querySelector(`input[name="goalMode"][value="${data.goalMode}"]`);
+                if (el) el.checked = true;
+            }
+            if (data.gender) {
+                const el = document.querySelector(`input[name="gender"][value="${data.gender}"]`);
+                if (el) el.checked = true;
+            }
+            setVal('currentWeight', data.currentWeight);
+            setVal('targetWeight', data.targetWeight);
+            setVal('height', data.height);
+            setVal('age', data.age);
+            setVal('bodyFat', data.bodyFat);
+            setVal('trainKcal', data.trainKcal);
+            setVal('trainDays', data.trainDays);
+            setVal('trainType', data.trainType);
+            setVal('mealCount', data.mealCount);
+            setVal('swapBaseGrams', data.swapBaseGrams);
+            if (data.selectedSourceId) selectedSourceId = data.selectedSourceId;
+
+            // Mode dependent selects are rebuilt first, then restored
+            onSportModeChange();
+            if (data.activity && [...document.getElementById('activity').options].some(o => o.value === data.activity)) {
+                setVal('activity', data.activity);
+            }
+            if (data.bmrFormula && !(data.bmrFormula === 'cunningham' && !data.sportMode)) {
+                setVal('bmrFormula', data.bmrFormula);
+            }
+            if (data.macroPreset && [...document.getElementById('macroPreset').options].some(o => o.value === data.macroPreset)) {
+                setVal('macroPreset', data.macroPreset);
+            }
+            setVal('proteinRatio', data.proteinRatio);
+            setVal('fatRatio', data.fatRatio);
+
+            onGoalModeChange();
+            if (data.calorieAdjustment && [...document.getElementById('calorieAdjustment').options].some(o => o.value === data.calorieAdjustment)) {
+                setVal('calorieAdjustment', data.calorieAdjustment);
+            }
+            onFormulaChange();
+            renderBodyFatPresets();
         }
 
         function resetDefaults() {
@@ -1213,10 +1680,6 @@
         // Initialize on load
         window.onload = function() {
             loadFromStorage();
-            if (!localStorage.getItem(STORAGE_KEY)) {
-                onGoalModeChange();
-                onFormulaChange();
-            }
             lucide.createIcons();
             calculate();
             initProteinSwapper();
