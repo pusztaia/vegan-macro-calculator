@@ -40,6 +40,7 @@ Növényi étrendre optimalizált kalória-, makrotápanyag- és étkezéstervez
 
 8. **📱 Mobil UX & Adatmentés**
    - Lebegő összefoglaló sáv mobilon, automatikus LocalStorage mentés, nyomtatóbarát nézet.
+   - **Főképernyőre menthető**: saját ikon és név (Vegán Makró), teljes képernyős indítás iOS-en és Androidon.
 
 > Tájékoztató becslés, nem helyettesíti az orvosi vagy dietetikusi tanácsot.
 
@@ -51,6 +52,7 @@ Nincs szükség szerverre vagy telepítésre, a projekt egyetlen önálló webol
 
 1. Nyisd meg az `index.html` fájlt bármelyik modern böngészőben.
 2. Vagy kapcsold be a **GitHub Pages** szolgáltatást a repóban.
+3. Mobilon (GitHub Pages-ről megnyitva): Safariban **Megosztás → Főképernyőhöz adás**, Androidon Chrome-ban **Hozzáadás a kezdőképernyőhöz**.
 
 ---
 
