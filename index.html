@@ -12,28 +12,35 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#16a34a">
+    <meta name="theme-color" content="#168a49">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        display: ['Fraunces', 'Georgia', 'serif']
+                    },
                     colors: {
+                        // Plant-tinted neutrals (replace cold slate). 400/500 meet 4.5:1 on white.
+                        slate: {
+                            50: '#f6f8f4', 100: '#edf1ea', 200: '#dde5d9', 300: '#c3cfbf',
+                            400: '#62735f', 500: '#4f5f4c', 600: '#3d4a3b', 700: '#2c372b',
+                            800: '#1a231b', 900: '#101712', 950: '#0a100b'
+                        },
                         brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
+                            50: '#effaf3', 100: '#d7f3e0', 200: '#b0e6c4', 300: '#86d9a6', 400: '#4cc27d', 500: '#1fa65b',
+                            600: '#168a49', 700: '#12703c', 800: '#115a33', 900: '#0f4a2b'
                         }
                     }
                 }
@@ -41,45 +48,126 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        :root {
+            --bg: #f3f6f0;
+            --surface: #ffffff;
+            --line: #e1e8dd;
+            --ring: rgba(22, 138, 73, .35);
+            --shadow-sm: 0 1px 2px rgba(16, 35, 20, .05), 0 1px 3px rgba(16, 35, 20, .04);
+            --shadow-md: 0 2px 4px rgba(16, 35, 20, .04), 0 12px 28px -8px rgba(16, 35, 20, .10);
+            --ease: cubic-bezier(.22, 1, .36, 1);
+        }
+        .dark {
+            --bg: #0c130d;
+            --surface: #151e16;
+            --line: #263227;
+            --ring: rgba(74, 205, 127, .45);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+            --shadow-md: 0 12px 28px -8px rgba(0, 0, 0, .55);
+        }
+
+        html { -webkit-text-size-adjust: 100%; }
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            background:
+                radial-gradient(900px 420px at 8% -8%, rgba(31, 166, 91, .10), transparent 60%),
+                radial-gradient(700px 380px at 100% 0%, rgba(245, 158, 11, .06), transparent 55%),
+                var(--bg) !important;
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+            font-variant-numeric: tabular-nums;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        /* Display serif for titles and big numbers */
+        h1, h2, h3, #targetCalVal, #tdeeVal, #timelineVal {
+            font-family: 'Fraunces', Georgia, serif;
+            font-optical-sizing: auto;
+            letter-spacing: -.01em;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
+        h1, h2, h3 { font-weight: 600 !important; }
+
+        /* Surfaces: one consistent card language */
+        main .bg-white.rounded-2xl, main .dark\:bg-slate-800.rounded-2xl {
+            background: var(--surface);
+            border-color: var(--line);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow .25s var(--ease), transform .25s var(--ease), border-color .25s var(--ease);
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(34, 197, 94, 0.3);
-            border-radius: 8px;
+        #resultsSection > .grid > .bg-white:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        header.sticky {
+            background: color-mix(in srgb, var(--surface) 82%, transparent) !important;
+            backdrop-filter: saturate(160%) blur(14px);
+            -webkit-backdrop-filter: saturate(160%) blur(14px);
+            border-color: var(--line) !important;
+            box-shadow: none !important;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(34, 197, 94, 0.5);
+        footer { background: transparent !important; border-color: var(--line) !important; }
+
+        /* Hero calorie card */
+        .hero-card {
+            position: relative; overflow: hidden; isolation: isolate;
+            background: linear-gradient(150deg, #168a49 0%, #0f5f35 100%) !important;
+            box-shadow: 0 18px 36px -14px rgba(15, 95, 53, .55) !important;
+        }
+        .hero-card::before {
+            content: ''; position: absolute; z-index: -1; right: -40px; top: -50px;
+            width: 190px; height: 190px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,.22), transparent 68%);
+        }
+        .hero-card::after {
+            content: ''; position: absolute; z-index: -1; left: -30px; bottom: -70px;
+            width: 170px; height: 170px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,.28), transparent 70%);
+        }
+
+        /* Form controls */
+        input[type=number], select {
+            background-color: var(--bg);
+            transition: border-color .2s, box-shadow .2s, background-color .2s;
+        }
+        .dark input[type=number], .dark select { background-color: #0f170f; }
+        input[type=number]:hover, select:hover { border-color: #9fb39a; }
+        input:focus-visible, select:focus-visible, button:focus-visible, label:has(input:focus-visible) > div {
+            outline: none !important;
+            box-shadow: 0 0 0 3px var(--ring) !important;
+            border-color: #168a49 !important;
+        }
+        button, label.cursor-pointer, select { cursor: pointer; touch-action: manipulation; }
+        input[type=range] { height: 28px; }
+        label.cursor-pointer > div:not(.relative) { min-height: 44px; }
+        label.cursor-pointer > div { transition: transform .15s var(--ease), border-color .2s, background-color .2s; }
+        label.cursor-pointer:active > div { transform: scale(.98); }
+        input:checked + div { box-shadow: inset 0 0 0 1px #1fa65b; }
+
+        /* Dark-mode secondary text stays readable */
+        .dark .text-slate-400, .dark .dark\:text-slate-400 { color: #9db09a !important; }
+        .dark .text-slate-500, .dark .dark\:text-slate-500 { color: #adbda9 !important; }
+        .dark .text-slate-600, .dark .dark\:text-slate-300 { color: #cdd9ca; }
+
+        /* Tabs */
+        #tabMealBtn, #tabSwapBtn, #tabMicroBtn { min-height: 48px; position: relative; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,.05); border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(31,166,91,.35); border-radius: 8px; }
+
+        /* Entrance motion (opacity/transform only) */
+        @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        main > section > * { animation: rise .5s var(--ease) both; }
+        main > section > *:nth-child(2) { animation-delay: .05s; }
+        main > section > *:nth-child(3) { animation-delay: .1s; }
+        main > section > *:nth-child(4) { animation-delay: .15s; }
+        main > section > *:nth-child(5) { animation-delay: .2s; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
         }
 
         @media print {
-            header button, #mobileSummaryBar, #resetBtn, .no-print {
-                display: none !important;
-            }
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            .dark {
-                color-scheme: light !important;
-            }
-            main {
-                display: block !important;
-                padding: 0 !important;
-            }
-            section {
-                break-inside: avoid;
-                box-shadow: none !important;
-                border: 1px solid #e2e8f0 !important;
-            }
+            header button, #mobileSummaryBar, #resetBtn, .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .dark { color-scheme: light !important; }
+            main { display: block !important; padding: 0 !important; }
+            section { break-inside: avoid; box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+            main > section > * { animation: none !important; }
         }
     </style>
 </head>
@@ -89,7 +177,7 @@
     <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex justify-between items-center">
             <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div class="p-2 sm:p-2.5 bg-brand-500 text-white rounded-xl shadow-md shadow-brand-500/20 shrink-0">
+                <div class="p-2 sm:p-2.5 bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-2xl shadow-lg shadow-brand-600/25 shrink-0">
                     <i data-lucide="leaf" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                 </div>
                 <div class="min-w-0">
@@ -358,12 +446,12 @@
             <!-- Key Metric Cards Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3.5">
                 <!-- Target Calories Card -->
-                <div class="col-span-2 sm:col-span-1 sm:order-2 bg-gradient-to-br from-brand-600 to-brand-700 text-white rounded-2xl p-4 sm:p-5 shadow-lg shadow-brand-500/15 flex flex-col justify-between">
+                <div class="hero-card col-span-2 sm:col-span-1 sm:order-2 text-white rounded-3xl p-5 sm:p-6 flex flex-col justify-between">
                     <div class="flex items-center justify-between opacity-90 mb-1">
                         <span class="text-xs font-semibold uppercase tracking-wider">Napi Cél Kalória</span>
                         <i data-lucide="target" class="w-4 h-4"></i>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-black tracking-tight" id="targetCalVal">0 kcal</div>
+                    <div class="text-3xl sm:text-4xl font-semibold tracking-tight my-1" id="targetCalVal">0 kcal</div>
                     <div class="text-[11px] opacity-90 mt-1 font-medium" id="deficitText">-500 kcal napi deficit</div>
                 </div>
 
@@ -1376,9 +1464,11 @@
                     labels: ['Fehérje', 'Szénhidrát', 'Zsír'],
                     datasets: [{
                         data: [p, c, f],
-                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'],
-                        borderWidth: 0,
-                        hoverOffset: 4
+                        backgroundColor: ['#1fa65b', '#3b82f6', '#f59e0b'],
+                        borderWidth: 3,
+                        borderColor: document.documentElement.classList.contains('dark') ? '#151e16' : '#ffffff',
+                        borderRadius: 6,
+                        hoverOffset: 6
                     }]
                 },
                 options: {
@@ -1396,7 +1486,8 @@
                             }
                         }
                     },
-                    cutout: '72%'
+                    cutout: '74%',
+                    animation: { duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 700 }
                 }
             });
         }

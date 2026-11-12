@@ -1,5 +1,5 @@
 // Service Worker for Vegán Makró & Étrend Tervező PWA
-const CACHE_NAME = 'vegan-macro-calc-v2';
+const CACHE_NAME = 'vegan-macro-calc-v3';
 
 const STATIC_ASSETS = [
     './',
