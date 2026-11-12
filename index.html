@@ -127,12 +127,12 @@
         }
 
         /* Form controls */
-        input[type=number], select {
+        input[type=number], select[id] {
             background-color: var(--bg);
             transition: border-color .2s, box-shadow .2s, background-color .2s;
         }
-        .dark input[type=number], .dark select { background-color: #0f170f; }
-        input[type=number]:hover, select:hover { border-color: #9fb39a; }
+        .dark input[type=number], .dark select[id] { background-color: #0f170f; }
+        input[type=number]:hover, select[id]:hover { border-color: #9fb39a; }
         input:focus-visible, select:focus-visible, button:focus-visible, label:has(input:focus-visible) > div {
             outline: none !important;
             box-shadow: 0 0 0 3px var(--ring) !important;
@@ -489,8 +489,8 @@
             <!-- Secondary Health Metrics: Fiber & Hydration -->
             <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5">
                 <!-- Fiber Card -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-4 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-4 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between items-start gap-2.5">
+                    <div class="flex flex-col items-start sm:flex-row sm:items-center gap-2 sm:gap-3">
                         <div class="p-2 sm:p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30 shrink-0">
                             <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </div>
@@ -503,8 +503,8 @@
                 </div>
 
                 <!-- Water Intake Card -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-4 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-4 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between items-start gap-2.5">
+                    <div class="flex flex-col items-start sm:flex-row sm:items-center gap-2 sm:gap-3">
                         <div class="p-2 sm:p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30 shrink-0">
                             <i data-lucide="droplet" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </div>
@@ -523,8 +523,8 @@
                     <i data-lucide="dumbbell" class="w-5 h-5 text-brand-500"></i>
                     Sportolói Táplálás
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    <div class="col-span-2 sm:col-span-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
                         <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Energiaelérhetőség (EA)</span>
                         <div class="text-lg font-bold" id="eaVal">--</div>
                         <span class="text-[11px] text-slate-400" id="eaText">kcal / kg sovány tömeg</span>
