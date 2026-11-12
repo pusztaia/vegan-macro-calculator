@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="hu" class="h-full">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Vegán Makró & Étrend Tervező</title>
     <!-- App icon & home screen (iOS Safari, Android) -->
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -67,6 +67,13 @@
         }
 
         html { -webkit-text-size-adjust: 100%; }
+        body { min-height: 100vh; min-height: 100dvh; }
+        /* Bottom bar: follows the Safari toolbar and respects the home indicator */
+        #mobileSummaryBar {
+            padding-bottom: calc(.5rem + env(safe-area-inset-bottom, 0px));
+            transform: translateZ(0);
+            will-change: transform;
+        }
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             background:
@@ -171,7 +178,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-200 pb-20 lg:pb-8">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col transition-colors duration-200 pb-24 lg:pb-8">
 
     <!-- Header -->
     <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
